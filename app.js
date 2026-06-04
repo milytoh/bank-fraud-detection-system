@@ -1,10 +1,21 @@
-
 require("./config/db");
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const path = require("path");
+const session = require("express-session");
 
-require("dotenv").config();
+const authRoutes = require("./routes/authRoutes");
+
+app.use("/auth", authRoutes);
+
+app.use(
+  session({
+    secret: "fraudshield_secret_key",
+    resave: false,
+    saveUninitialized: false,
+  }),
+);
 
 // Middleware
 app.use(express.json());
