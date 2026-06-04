@@ -22,7 +22,7 @@ exports.register = async (req, res) => {
 };
 
 // LOGIN USER
-exports.login = (req, res) => {
+exports.login = (req, res, next) => {
   const { email, password } = req.body;
 
   db.query(
@@ -45,7 +45,17 @@ exports.login = (req, res) => {
 
       req.session.user = user;
 
-      res.send("Login successful");
+      res.redirect("/dashboard");
+
+      //   res.send("Login successful");
     },
   );
+
+ 
+};
+
+exports.logout = (req, res) => {
+  req.session.destroy(() => {
+    res.redirect("/auth/login");
+  });
 };

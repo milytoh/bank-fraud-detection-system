@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>FraudShield Dashboard</title>
+    <link rel="stylesheet" href="/css/dashboard.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <div class="layout">
+      <!-- MOBILE TOP BAR -->
+      <div class="topbar">
+        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+      </div>
+
+      <!-- SIDEBAR -->
+      <div class="sidebar" id="sidebar">
+        <h2>FraudShield</h2>
+
+        <a href="/dashboard">Dashboard</a>
+        <a href="#">Customers</a>
+        <a href="#">Transactions</a>
+        <a href="#">Fraud Alerts</a>
+        <a href="/auth/logout">Logout</a>
+      </div>
+
+      <!-- OVERLAY (mobile) -->
+      <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+      <!-- MAIN CONTENT -->
+      <div class="main">
+        <h1>Welcome, Admin</h1>
+
+        <div class="cards">
+          <div class="card">
+            Customers
+            <h3>120</h3>
+          </div>
+          <div class="card">
+            Transactions
+            <h3>450</h3>
+          </div>
+          <div class="card">
+            Fraud Alerts
+            <h3>12</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function toggleSidebar() {
+        document.getElementById("sidebar").classList.toggle("active");
+        document.getElementById("overlay").classList.toggle("active");
+      }
+    </script>
+  </body>
+</html>

@@ -6,8 +6,13 @@ const path = require("path");
 const session = require("express-session");
 
 const authRoutes = require("./routes/authRoutes");
+const dashboardRoutes = require("./routes/dashboardRoutes");
 
-app.use("/auth", authRoutes);
+
+
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(
   session({
@@ -16,10 +21,6 @@ app.use(
     saveUninitialized: false,
   }),
 );
-
-// Middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 // EJS setup
 app.set("view engine", "ejs");
@@ -32,6 +33,9 @@ app.use(express.static(path.join(__dirname, "public")));
 app.get("/", (req, res) => {
   res.send("FraudShield System Running 🚀");
 });
+
+app.use("/auth", authRoutes);
+app.use("/dashboard", dashboardRoutes);
 
 const PORT = process.env.PORT || 3000;
 
