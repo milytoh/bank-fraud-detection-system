@@ -1,0 +1,10 @@
+# Dependency directories
+node_modules/
+
+# Environment variables (contains private API keys/secrets)
+.env
+
+# Logs
+logs
+*.log
+npm-debug.log*
