@@ -9,6 +9,7 @@
 body {
     background: #0f172a;
     color: white;
+     
 }
 
 /* LAYOUT */
@@ -105,6 +106,107 @@ body {
     background: rgba(0,0,0,0.5);
 }
 
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.page-header h1 {
+    font-size: 24px;
+}
+
+.btn {
+    background: #2563eb;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: #1d4ed8;
+}
+
+.table-container {
+    background: #1e293b;
+    padding: 15px;
+    border-radius: 12px;
+    overflow-x: auto;
+}
+
+.status {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.status.active {
+    background: #16a34a33;
+    color: #22c55e;
+}
+
+.status.inactive {
+    background: #ef444433;
+    color: #ef4444;
+}
+
+.main {
+    margin-left: 250px;
+    padding: 20px;
+    width: calc(100% - 250px);
+    overflow-x: hidden;
+}
+
+.footer {
+    background: #0b1220;
+    margin-top: 40px;
+    padding: 20px;
+    border-top: 1px solid #1f2937;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.footer-left h3 {
+    color: #38bdf8;
+    margin-bottom: 5px;
+}
+
+.footer-left p {
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+.footer-links {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    color: #cbd5e1;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.footer-links a:hover {
+    color: #38bdf8;
+}
+
+.footer-right {
+    color: #64748b;
+    font-size: 13px;
+}
+
 /* MOBILE RESPONSIVE */
 @media (max-width: 768px) {
 
@@ -113,7 +215,10 @@ body {
         position: fixed;
         z-index: 1000;
     }
-
+ .main {
+        margin-left: 0;
+        width: 100%;
+    }
     .sidebar.active {
         left: 0;
     }
@@ -132,5 +237,19 @@ body {
 
     .overlay.active {
         display: block;
+    }
+
+     .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    table {
+        font-size: 14px;
+    }
+
+    th, td {
+        padding: 8px;
     }
 }

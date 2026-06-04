@@ -7,12 +7,14 @@ const session = require("express-session");
 
 const authRoutes = require("./routes/authRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
+const customerRoutes = require("./routes/customerRoutes");
 
 
 
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 
 app.use(
   session({
@@ -36,6 +38,7 @@ app.get("/", (req, res) => {
 
 app.use("/auth", authRoutes);
 app.use("/dashboard", dashboardRoutes);
+app.use("/customers", customerRoutes);
 
 const PORT = process.env.PORT || 3000;
 

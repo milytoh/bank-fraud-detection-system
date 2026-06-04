@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title><%= title || "FraudShield" %></title>
+
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="/css/dashboard.css">
+
+    <!-- Optional page-specific CSS -->
+    <% if (typeof pageCss !== 'undefined') { %>
+        <link rel="stylesheet" href="<%= pageCss %>">
+    <% } %>
+</head>
+<body
