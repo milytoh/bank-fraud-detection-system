@@ -26,6 +26,7 @@ exports.createPage = (req, res) => {
 exports.store = (req, res) => {
   const { fullname, email, phone, address } = req.body;
 
+
   const customerCode = "CUS-" + Date.now().toString().slice(-6);
 
   const sql = `
@@ -42,10 +43,13 @@ exports.store = (req, res) => {
 
   db.query(sql, [customerCode, fullname, email, phone, address], (err) => {
     if (err) {
-      console.log(err);
-      return res.send(err.message);
+      req.flash("error", "Failed to create customer.");
+
+      return res.redirect("/customers/create");
     }
 
-    res.redirect("/customers");
+   req.flash("success", "Customer created successfully.");
+
+   res.redirect("/customers");
   });
 };

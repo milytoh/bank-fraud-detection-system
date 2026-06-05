@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', {
+    title: "Accounts",
+    pageCss: "/css/accounts.css"
+}) %>
+
+<body>
+
+<%- include('../partials/sidebar') %>
+
+<div class="main">
+
+<%- include('../partials/topbar', { user }) %>
+
+<div class="page-header">
+
+<h1>Accounts</h1>
+
+<a
+    href="/accounts/create"
+    class="btn"
+>
++ Open Account
+</a>
+
+</div>
+
+<div class="table-container">
+
+<table>
+
+<thead>
+<tr>
+    <th>Account No</th>
+    <th>Customer</th>
+    <th>Type</th>
+    <th>Balance</th>
+    <th>Status</th>
+</tr>
+</thead>
+
+<tbody>
+
+<% accounts.forEach(account => { %>
+
+<tr>
+
+<td>
+<%= account.account_number %>
+</td>
+
+<td>
+<%= account.fullname %>
+</td>
+
+<td>
+<%= account.account_type %>
+</td>
+
+<td>
+₦<%= account.balance %>
+</td>
+
+<td>
+<%= account.status %>
+</td>
+
+</tr>
+
+<% }) %>
+
+</tbody>
+
+</table>
+
+</div>
+
+<%- include('../partials/footer') %>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', {
+    title: "Create Account",
+    pageCss: "/css/accounts.css"
+}) %>
+
+<body>
+
+<%- include('../partials/sidebar') %>
+
+<div class="main">
+
+<%- include('../partials/topbar', { user }) %>
+
+<div class="form-container">
+
+<div class="form-card">
+
+<h1>Create Account</h1>
+
+<form
+    action="/accounts/create"
+    method="POST"
+>
+
+<label>Customer</label>
+
+<select
+    name="customer_id"
+    required
+>
+<option value="">
+Select Customer
+</option>
+
+<% customers.forEach(customer => { %>
+
+<option value="<%= customer.id %>">
+    <%= customer.fullname %>
+</option>
+
+<% }) %>
+
+</select>
+
+<label>Account Type</label>
+
+<select
+    name="account_type"
+>
+<option value="savings">
+Savings
+</option>
+
+<option value="current">
+Current
+</option>
+</select>
+
+<label>
+Opening Balance
+</label>
+
+<input
+    type="number"
+    name="balance"
+    value="0"
+>
+
+<button type="submit">
+Create Account
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+<%- include('../partials/footer') %>
+
+</div>
+
+</body>
+</html>

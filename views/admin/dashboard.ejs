@@ -10,6 +10,8 @@
       <!-- MOBILE TOP BAR -->
       <%- include('../partials/topbar') %>
 
+     
+
       <!-- SIDEBAR -->
       <%- include('../partials/sidebar') %>
 
@@ -18,6 +20,7 @@
 
       <!-- MAIN CONTENT -->
       <div class="main">
+         <%- include('../partials/flash') %>
         <h1>Welcome, Admin</h1>
 
         <div class="cards">
@@ -47,5 +50,6 @@
         document.getElementById("overlay").classList.toggle("active");
       }
     </script>
+    <script src="/js/flash.js"></script>
   </body>
 </html>
