@@ -9,6 +9,7 @@ const authRoutes = require("./routes/authRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
 const customerRoutes = require("./routes/customerRoutes");
 const accountRoutes = require("./routes/accountRoutes");
+const transactionRoutes = require("./routes/transactionRoutes");
 
 
 
@@ -49,6 +50,7 @@ app.use("/auth", authRoutes);
 app.use("/dashboard", dashboardRoutes);
 app.use("/customers", customerRoutes);
 app.use("/accounts", accountRoutes);
+app.use("/transactions", transactionRoutes);
 
 const PORT = process.env.PORT || 3000;
 

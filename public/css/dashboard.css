@@ -215,7 +215,7 @@ body {
     position: relative;
     overflow: hidden;
 
-    margin-left: 210px
+    /* margin-left: 210px */
 }
 
 .success-alert {

@@ -9,5 +9,6 @@ router.get("/", auth, accountController.index);
 router.get("/create", auth, accountController.createPage);
 
 router.post("/create", auth, accountController.store);
+router.get("/:id", auth, accountController.show);
 
 module.exports = router;

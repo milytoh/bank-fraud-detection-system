@@ -47,16 +47,20 @@ Select Customer
 
 <label>Account Type</label>
 
-<select
-    name="account_type"
->
-<option value="savings">
-Savings
-</option>
+<select name="type" id="typeSelect">
+    <option value="">Select Type</option>
 
-<option value="current">
-Current
-</option>
+    <option value="deposit" <%= preType === 'deposit' ? 'selected' : '' %>>
+        Deposit
+    </option>
+
+    <option value="withdraw" <%= preType === 'withdraw' ? 'selected' : '' %>>
+        Withdraw
+    </option>
+
+    <option value="transfer" <%= preType === 'transfer' ? 'selected' : '' %>>
+        Transfer
+    </option>
 </select>
 
 <label>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', {
+    title: "Transactions - FraudShield",
+    pageCss: "/css/transactions.css"
+}) %>
+
+<body>
+
+<%- include('../partials/sidebar') %>
+
+<div class="main">
+
+    <%- include('../partials/topbar', { user }) %>
+
+    <%- include('../partials/flash') %>
+
+    <div class="page-header">
+        <h1>New Transaction</h1>
+    </div>
+
+    <div class="form-card">
+
+        <form action="/transactions/create" method="POST">
+
+            <!-- TRANSACTION TYPE -->
+            <label>Transaction Type</label>
+
+            <select name="type" id="typeSelect" required>
+
+                <option value="">Select Type</option>
+
+                <option value="deposit"
+                    <%= (typeof preType !== 'undefined' && preType === 'deposit') ? 'selected' : '' %>
+                >
+                    Deposit
+                </option>
+
+                <option value="withdraw"
+                    <%= (typeof preType !== 'undefined' && preType === 'withdraw') ? 'selected' : '' %>
+                >
+                    Withdraw
+                </option>
+
+                <option value="transfer"
+                    <%= (typeof preType !== 'undefined' && preType === 'transfer') ? 'selected' : '' %>
+                >
+                    Transfer
+                </option>
+
+            </select>
+
+            <!-- FROM ACCOUNT -->
+            <label>From Account</label>
+
+            <select name="from_account" id="fromAccount" required>
+
+                <option value="">Select Account</option>
+
+                <% accounts.forEach(acc => { %>
+                    <option
+                        value="<%= acc.id %>"
+                        <%= (typeof preAccount !== 'undefined' && preAccount == acc.id) ? 'selected' : '' %>
+                    >
+                        <%= acc.account_number %> - <%= acc.fullname %>
+                    </option>
+                <% }) %>
+
+            </select>
+
+            <!-- TO ACCOUNT (ONLY FOR TRANSFER) -->
+            <div id="toAccountBox" style="display:none;">
+
+                <label>To Account</label>
+
+                <select name="to_account">
+
+                    <option value="">Select Account</option>
+
+                    <% accounts.forEach(acc => { %>
+                        <option value="<%= acc.id %>">
+                            <%= acc.account_number %> - <%= acc.fullname %>
+                        </option>
+                    <% }) %>
+
+                </select>
+
+            </div>
+
+            <!-- AMOUNT -->
+            <label>Amount</label>
+            <input type="number" name="amount" required placeholder="Enter amount">
+
+            <button type="submit">Process Transaction</button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script>
+    const typeSelect = document.getElementById("typeSelect");
+    const toBox = document.getElementById("toAccountBox");
+
+    function toggleToAccount() {
+        if (typeSelect.value === "transfer") {
+            toBox.style.display = "block";
+        } else {
+            toBox.style.display = "none";
+        }
+    }
+
+    typeSelect.addEventListener("change", toggleToAccount);
+    toggleToAccount();
+</script>
+
+</body>
+</html>

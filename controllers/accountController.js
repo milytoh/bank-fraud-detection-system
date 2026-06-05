@@ -33,7 +33,9 @@ exports.createPage = (req, res) => {
       if (err) {
         console.log(err);
         return res.send("Error loading customers");
-      }
+        }
+        
+
 
       res.render("accounts/create", {
         user: req.session.user,
@@ -66,12 +68,46 @@ exports.store = (req, res) => {
     sql,
     [customer_id, accountNumber, account_type, balance || 0],
     (err) => {
-      if (err) {
-        console.log(err);
-        return res.send(err.message);
-      }
+        if (err) {
+           req.flash("error", "Failed to create account.");
 
+      return res.redirect("/accounts/create");
+        
+      }
+     req.flash("success", "account created successfully.");
       res.redirect("/accounts");
     },
   );
+};
+
+exports.show = (req, res) => {
+  const accountId = req.params.id;
+
+  const sql = `
+        SELECT 
+            accounts.*,
+            customers.fullname,
+            customers.email,
+            customers.phone
+        FROM accounts
+        JOIN customers 
+        ON accounts.customer_id = customers.id
+        WHERE accounts.id = ?
+    `;
+
+  db.query(sql, [accountId], (err, result) => {
+    if (err) {
+      console.log(err);
+      return res.send("Error loading account");
+    }
+
+    if (result.length === 0) {
+      return res.send("Account not found");
+    }
+
+    res.render("accounts/show", {
+      user: req.session.user,
+      account: result[0],
+    });
+  });
 };

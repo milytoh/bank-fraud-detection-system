@@ -2,7 +2,7 @@
 <html lang="en">
 
 <%- include('../partials/head', {
-    title: "Accounts",
+    title: "Accounts - FraudShield",
     pageCss: "/css/accounts.css"
 }) %>
 
@@ -12,74 +12,90 @@
 
 <div class="main">
 
-<%- include('../partials/topbar', { user }) %>
+    <%- include('../partials/topbar', { user }) %>
 
-<div class="page-header">
+    <%- include('../partials/flash') %>
 
-<h1>Accounts</h1>
+    <div class="page-header">
 
-<a
-    href="/accounts/create"
-    class="btn"
->
-+ Open Account
-</a>
+        <h1>Accounts</h1>
+
+        <a href="/accounts/create" class="btn">
+            + Open Account
+        </a>
+
+    </div>
+
+    <div class="table-container">
+
+        <% if (accounts.length === 0) { %>
+
+            <div class="empty-state">
+                <h3>No accounts found</h3>
+                <p>Click "Open Account" to create your first account</p>
+            </div>
+
+        <% } else { %>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Account No</th>
+                    <th>Customer</th>
+                    <th>Type</th>
+                    <th>Balance</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <% accounts.forEach(account => { %>
+
+                <tr>
+
+                    <td>
+                        <a class="acct-link" href="/accounts/<%= account.id %>">
+                            <%= account.account_number %>
+                        </a>
+                    </td>
+
+                    <td>
+                        <%= account.fullname %>
+                    </td>
+
+                    <td>
+                        <%= account.account_type %>
+                    </td>
+
+                    <td>
+                        ₦<%= account.balance %>
+                    </td>
+
+                    <td>
+                        <span class="status <%= account.status %>">
+                            <%= account.status %>
+                        </span>
+                    </td>
+
+                </tr>
+
+                <% }) %>
+
+            </tbody>
+
+        </table>
+
+        <% } %>
+
+    </div>
+
+    <%- include('../partials/footer') %>
 
 </div>
 
-<div class="table-container">
-
-<table>
-
-<thead>
-<tr>
-    <th>Account No</th>
-    <th>Customer</th>
-    <th>Type</th>
-    <th>Balance</th>
-    <th>Status</th>
-</tr>
-</thead>
-
-<tbody>
-
-<% accounts.forEach(account => { %>
-
-<tr>
-
-<td>
-<%= account.account_number %>
-</td>
-
-<td>
-<%= account.fullname %>
-</td>
-
-<td>
-<%= account.account_type %>
-</td>
-
-<td>
-₦<%= account.balance %>
-</td>
-
-<td>
-<%= account.status %>
-</td>
-
-</tr>
-
-<% }) %>
-
-</tbody>
-
-</table>
-
-</div>
-
-<%- include('../partials/footer') %>
-
-</div>
+<script src="/js/flash.js"></script>
 
 </body>
 </html>
