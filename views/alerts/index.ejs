@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', {
+    title: "Fraud Alerts - FraudShield",
+    pageCss: "/css/transactions.css"
+}) %>
+
+<body>
+
+<%- include('../partials/sidebar') %>
+
+<div class="main">
+
+    <%- include('../partials/topbar', { user }) %>
+
+    <%- include('../partials/flash') %>
+
+    <h1>Fraud Alerts</h1>
+
+    <div class="table-container">
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Account</th>
+                    <th>Message</th>
+                    <th>Level</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <% alerts.forEach(a => { %>
+                    <tr>
+                        <td><%= a.account_number %></td>
+                        <td><%= a.message %></td>
+                        <td><%= a.level %></td>
+                        <td><%= new Date(a.created_at).toLocaleString() %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+</body>
+</html>

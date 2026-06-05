@@ -96,16 +96,15 @@ exports.processTransaction = (req, res) => {
           return res.redirect("/transactions/create");
         }
 
-       
-         saveTransaction(
-           from_account,
-           null,
-           amt,
-           "withdraw",
-           res,
-           "Withdraw successful",
-           req,
-         );
+        saveTransaction(
+          from_account,
+          null,
+          amt,
+          "withdraw",
+          res,
+          "Withdraw successful",
+          req,
+        );
       });
     });
   }
@@ -151,9 +150,7 @@ exports.processTransaction = (req, res) => {
           if (err) {
             req.flash("error", "Transfer failed");
             return res.redirect("/transactions/create");
-            }
-            
-           
+          }
 
           saveTransaction(
             from_account,
@@ -161,8 +158,8 @@ exports.processTransaction = (req, res) => {
             amt,
             "transfer",
             res,
-              "Transfer successful",
-            req
+            "Transfer successful",
+            req,
           );
         });
       });
@@ -180,14 +177,128 @@ function saveTransaction(from, to, amount, type, res, message, req) {
         VALUES (?, ?, ?, ?, 'success')
     `;
 
-  db.query(sql, [from, to, amount, type], (err) => {
+  db.query(sql, [from, to, amount, type], (err, result) => {
     if (err) {
       console.log(err);
       req.flash("error", "Transaction save failed");
       return res.redirect("/transactions/create");
     }
 
+    const transactionId = result.insertId;
+
+    // 👉 CALL FRAUD DETECTION
+    detectFraud(transactionId, from, to, amount, type);
+
     req.flash("success", message);
     return res.redirect("/transactions/create");
   });
 }
+
+/////fraud detection rules/////////////
+function detectFraud(transactionId, fromAccount, toAccount, amount, type) {
+  amount = Number(amount);
+
+  const sourceAccount = fromAccount ? Number(fromAccount) : null;
+  const destinationAccount = toAccount ? Number(toAccount) : null;
+
+  let alerts = [];
+
+  // RULE 1: Large transaction
+  if (amount >= 500000) {
+    alerts.push("Large transaction detected");
+  }
+
+  // RULE 2: Self transfer (ONLY for transfer)
+  if (type === "transfer" && sourceAccount === destinationAccount) {
+    alerts.push("Self transfer detected");
+  }
+
+  // RULE 3: Rapid transactions (track source account)
+  const accountToCheck = sourceAccount || destinationAccount;
+
+  if (!accountToCheck) return;
+
+  const sql = `
+SELECT COUNT(*) AS count
+FROM transactions
+WHERE (
+    from_account = ?
+    OR to_account = ?
+)
+AND created_at >= (NOW() - INTERVAL 1 MINUTE)
+`;
+
+  db.query(sql, [accountToCheck, accountToCheck], (err, result) => {
+   
+
+    if (result[0].count >= 3) {
+      alerts.push("Rapid transactions detected");
+    }
+
+    saveAlerts(alerts, accountToCheck, transactionId);
+  });
+}
+
+function saveAlerts(alerts, accountId, transactionId) {
+  if (!alerts || alerts.length === 0) return;
+
+  
+
+  alerts.forEach((msg) => {
+    const sql = `
+            INSERT INTO alerts (account_id, transaction_id, message, level)
+            VALUES (?, ?, ?, 'warning')
+        `;
+
+    db.query(sql, [accountId, transactionId, msg], (err) => {
+      if (err) {
+        console.log("❌ ALERT INSERT ERROR:", err);
+      } else {
+        console.log("✅ ALERT SAVED");
+      }
+    });
+  });
+}
+
+exports.historyPage = (req, res) => {
+  const sql = `
+        SELECT 
+            t.*,
+            fa.account_number AS from_account_number,
+            ta.account_number AS to_account_number
+        FROM transactions t
+        LEFT JOIN accounts fa ON t.from_account = fa.id
+        LEFT JOIN accounts ta ON t.to_account = ta.id
+        ORDER BY t.id DESC
+    `;
+
+  db.query(sql, (err, transactions) => {
+    if (err) {
+      console.log(err);
+      return res.send("Error loading transactions");
+    }
+
+    res.render("transactions/history", {
+      user: req.session.user,
+      transactions,
+    });
+  });
+};
+
+exports.alertsPage = (req, res) => {
+  const sql = `
+        SELECT alerts.*, accounts.account_number
+        FROM alerts
+        JOIN accounts ON alerts.account_id = accounts.id
+        ORDER BY alerts.id DESC
+    `;
+
+  db.query(sql, (err, alerts) => {
+    if (err) return res.send("Error");
+
+    res.render("alerts/index", {
+      user: req.session.user,
+      alerts,
+    });
+  });
+};

@@ -6,5 +6,8 @@ const transactionController = require("../controllers/transactionController");
 
 router.get("/create", auth, transactionController.createPage);
 router.post("/create", auth, transactionController.processTransaction);
+router.get("/history", auth, transactionController.historyPage);
+router.get("/alerts", auth, transactionController.alertsPage);
+router.get("/fraud-dashboard", auth, transactionController.fraudDashboard);
 
 module.exports = router;

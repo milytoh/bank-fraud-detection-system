@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', {
+    title: "Transaction History - FraudShield",
+    pageCss: "/css/transactions.css"
+}) %>
+
+<body>
+
+<%- include('../partials/sidebar') %>
+
+<div class="main">
+
+    <%- include('../partials/topbar', { user }) %>
+
+    <%- include('../partials/flash') %>
+
+    <div class="page-header">
+        <h1>Transaction History</h1>
+    </div>
+
+    <!-- SUMMARY CARDS -->
+    <div class="cards">
+
+        <div class="card">
+            <span>Total Transactions</span>
+            <h2><%= transactions.length %></h2>
+        </div>
+
+        <div class="card">
+            <span>Deposits</span>
+            <h2><%= transactions.filter(t => t.type === 'deposit').length %></h2>
+        </div>
+
+        <div class="card">
+            <span>Withdrawals</span>
+            <h2><%= transactions.filter(t => t.type === 'withdraw').length %></h2>
+        </div>
+
+        <div class="card">
+            <span>Transfers</span>
+            <h2><%= transactions.filter(t => t.type === 'transfer').length %></h2>
+        </div>
+
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <% transactions.forEach(t => { %>
+
+                    <tr>
+
+                        <td>
+                            <span class="badge <%= t.type %>">
+                                <%= t.type %>
+                            </span>
+                        </td>
+
+                        <td><%= t.from_account_number || "-" %></td>
+
+                        <td><%= t.to_account_number || "-" %></td>
+
+                        <td class="amount">₦<%= Number(t.amount).toLocaleString() %></td>
+
+                        <td><%= new Date(t.created_at).toLocaleString() %></td>
+
+                    </tr>
+
+                <% }) %>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+</body>
+</html>
