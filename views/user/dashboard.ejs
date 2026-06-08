@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Customer Dashboard</title>
+    <link rel="stylesheet" href="/css/user-dashboard.css">
+</head>
+
+<body>
+
+<div class="main">
+
+    <h1>Welcome, <%= user.fullname %></h1>
+
+    <!-- CARDS -->
+    <div class="cards">
+
+        <div class="card">
+            <h3>Account Number</h3>
+            <p><%= account.account_number %></p>
+        </div>
+
+        <div class="card">
+            <h3>Balance</h3>
+            <p>₦<%= account.balance.toLocaleString() %></p>
+        </div>
+
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="actions">
+
+        <a href="/transactions/create?type=transfer&account=<%= account.id %>">
+            Transfer
+        </a>
+
+        <a href="/transactions/create?type=withdraw&account=<%= account.id %>">
+            Withdraw
+        </a>
+
+        <a href="/transactions/history">
+            View All Transactions
+        </a>
+
+    </div>
+
+    <!-- RECENT TRANSACTIONS -->
+    <div style="margin-top: 30px;">
+
+        <h2>Recent Transactions</h2>
+
+        <div class="card">
+
+            <% if(transactions.length === 0) { %>
+                <p>No transactions yet</p>
+            <% } %>
+
+            <% transactions.forEach(t => { %>
+
+                <div style="padding:10px 0; border-bottom:1px solid #334155;">
+                    <strong><%= t.type.toUpperCase() %></strong>
+                    <p>₦<%= t.amount %></p>
+                    <small><%= new Date(t.created_at).toLocaleString() %></small>
+                </div>
+
+            <% }) %>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

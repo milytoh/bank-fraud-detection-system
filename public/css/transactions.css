@@ -117,3 +117,9 @@ td {
     padding: 15px;
     border-radius: 12px;
 }
+
+.actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}

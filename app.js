@@ -20,9 +20,12 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   session({
-    secret: "fraudshield_secret_key",
+    secret: "your_secret",
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      maxAge: 1000 * 60 * 60, // 
+    },
   }),
 );
 const flash = require("connect-flash");

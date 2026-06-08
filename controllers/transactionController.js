@@ -40,36 +40,59 @@ exports.processTransaction = (req, res) => {
   // 1. DEPOSIT
   // =========================
   if (type === "deposit") {
-    const sql = `
-            UPDATE accounts
-            SET balance = balance + ?
-            WHERE id = ?
-        `;
+    // Check account status first
+    db.query(
+      "SELECT status FROM accounts WHERE id = ?",
+      [from_account],
+      (err, result) => {
+        if (err || result.length === 0) {
+          req.flash("error", "Account not found");
+          return res.redirect("/transactions/create");
+        }
 
-    db.query(sql, [amt, from_account], (err) => {
-      if (err) {
-        console.log(err);
-        req.flash("error", "Deposit failed");
-        return res.redirect("/transactions/create");
-      }
+        if (result[0].status === "blocked") {
+          req.flash("error", "Account is blocked. Deposit not allowed.");
 
-      saveTransaction(
-        null,
-        from_account,
-        amt,
-        "deposit",
-        res,
-        "Deposit successful",
-        req,
-      );
-    });
+          return res.redirect("/transactions/create");
+        }
+
+        // Proceed with deposit
+        const sql = `
+        UPDATE accounts
+        SET balance = balance + ?
+        WHERE id = ?
+      `;
+
+        db.query(sql, [amt, from_account], (err) => {
+          if (err) {
+            console.log(err);
+            req.flash("error", "Deposit failed");
+            return res.redirect("/transactions/create");
+          }
+
+          saveTransaction(
+            null,
+            from_account,
+            amt,
+            "deposit",
+            res,
+            "Deposit successful",
+            req,
+          );
+        });
+      },
+    );
   }
 
   // =========================
   // 2. WITHDRAW
   // =========================
   else if (type === "withdraw") {
-    const checkSql = `SELECT balance FROM accounts WHERE id = ?`;
+    const checkSql = `
+    SELECT balance, status
+    FROM accounts
+    WHERE id = ?
+  `;
 
     db.query(checkSql, [from_account], (err, result) => {
       if (err || result.length === 0) {
@@ -77,18 +100,26 @@ exports.processTransaction = (req, res) => {
         return res.redirect("/transactions/create");
       }
 
-      const balance = result[0].balance;
+      const account = result[0];
 
-      if (balance < amt) {
+      // Check if account is blocked
+      if (account.status === "blocked") {
+        req.flash("error", "Account is blocked. Withdrawal not allowed.");
+
+        return res.redirect("/transactions/create");
+      }
+
+      // Check balance
+      if (account.balance < amt) {
         req.flash("error", "Insufficient balance");
         return res.redirect("/transactions/create");
       }
 
       const sql = `
-                UPDATE accounts
-                SET balance = balance - ?
-                WHERE id = ?
-            `;
+      UPDATE accounts
+      SET balance = balance - ?
+      WHERE id = ?
+    `;
 
       db.query(sql, [amt, from_account], (err) => {
         if (err) {
@@ -113,60 +144,88 @@ exports.processTransaction = (req, res) => {
   // 3. TRANSFER
   // =========================
   else if (type === "transfer") {
-    const checkSql = `SELECT balance FROM accounts WHERE id = ?`;
+    const checkSql = `
+    SELECT id, balance, status
+    FROM accounts
+    WHERE id = ?
+  `;
 
-    db.query(checkSql, [from_account], (err, result) => {
-      if (err || result.length === 0) {
+    // 1. Check source account
+    db.query(checkSql, [from_account], (err, fromResult) => {
+      if (err || fromResult.length === 0) {
         req.flash("error", "Source account not found");
         return res.redirect("/transactions/create");
       }
 
-      const balance = result[0].balance;
+      const fromAcc = fromResult[0];
 
-      if (balance < amt) {
+      // Block check (source)
+      if (fromAcc.status === "blocked") {
+        req.flash("error", "Source account is blocked");
+        return res.redirect("/transactions/create");
+      }
+
+      // Balance check
+      if (fromAcc.balance < amt) {
         req.flash("error", "Insufficient balance");
         return res.redirect("/transactions/create");
       }
 
-      const deductSql = `
-                UPDATE accounts
-                SET balance = balance - ?
-                WHERE id = ?
-            `;
-
-      const addSql = `
-                UPDATE accounts
-                SET balance = balance + ?
-                WHERE id = ?
-            `;
-
-      db.query(deductSql, [amt, from_account], (err) => {
-        if (err) {
-          req.flash("error", "Transfer failed");
+      // 2. Check destination account
+      db.query(checkSql, [to_account], (err, toResult) => {
+        if (err || toResult.length === 0) {
+          req.flash("error", "Destination account not found");
           return res.redirect("/transactions/create");
         }
 
-        db.query(addSql, [amt, to_account], (err) => {
+        const toAcc = toResult[0];
+
+        // Block check (destination)
+        if (toAcc.status === "blocked") {
+          req.flash("error", "Destination account is blocked");
+          return res.redirect("/transactions/create");
+        }
+
+        // 3. Deduct from sender
+        const deductSql = `
+        UPDATE accounts
+        SET balance = balance - ?
+        WHERE id = ?
+      `;
+
+        db.query(deductSql, [amt, from_account], (err) => {
           if (err) {
-            req.flash("error", "Transfer failed");
+            req.flash("error", "Transfer failed (debit error)");
             return res.redirect("/transactions/create");
           }
 
-          saveTransaction(
-            from_account,
-            to_account,
-            amt,
-            "transfer",
-            res,
-            "Transfer successful",
-            req,
-          );
+          // 4. Add to receiver
+          const addSql = `
+          UPDATE accounts
+          SET balance = balance + ?
+          WHERE id = ?
+        `;
+
+          db.query(addSql, [amt, to_account], (err) => {
+            if (err) {
+              req.flash("error", "Transfer failed (credit error)");
+              return res.redirect("/transactions/create");
+            }
+
+            // 5. Save transaction
+            saveTransaction(
+              from_account,
+              to_account,
+              amt,
+              "transfer",
+              res,
+              "Transfer successful",
+              req,
+            );
+          });
         });
       });
     });
-  } else {
-    req.flash("error", "Invalid transaction type");
-    return res.redirect("/transactions/create");
   }
 };
 
@@ -340,16 +399,7 @@ exports.fraudDashboard = (req, res) => {
   });
 };
 
-// exports.reviewAlert = (req, res) => {
-//   db.query(
-//     "UPDATE alerts SET status='under_review' WHERE id=?",
-//     [req.params.id],
-//     () => {
-//       req.flash("success", "Alert moved to review");
-//       res.redirect("/transactions/alerts");
-//     },
-//   );
-// };
+
 
 
 exports.viewAlert = (req, res) => {
@@ -377,6 +427,25 @@ exports.viewAlert = (req, res) => {
       alert: result[0],
     });
   });
+};
+
+
+exports.reviewAlert = (req, res) => {
+  db.query(
+    "UPDATE alerts SET status = 'under_review' WHERE id = ?",
+    [req.params.id],
+    (err) => {
+      if (err) {
+        console.log(err);
+        req.flash("error", "Failed to update alert");
+        return res.redirect("/transactions/alerts");
+      }
+
+      req.flash("success", "Alert marked as under review");
+
+      res.redirect(`/transactions/alerts/${req.params.id}`);
+    },
+  );
 };
 
 exports.resolveAlert = (req, res) => {

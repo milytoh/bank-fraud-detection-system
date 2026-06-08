@@ -51,3 +51,70 @@ button {
 button:hover {
     background: #1d4ed8;
 }
+
+ Center login box */
+.auth-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 400px;
+    background: #1e293b;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+.auth-card h2 {
+    margin-bottom: 5px;
+}
+
+.auth-card p {
+    color: #94a3b8;
+    margin-bottom: 20px;
+}
+
+.auth-card label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #cbd5e1;
+}
+
+.auth-card input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    background: #0f172a;
+    color: white;
+}
+
+.auth-card button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    background: #2563eb;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.auth-card button:hover {
+    background: #1d4ed8;
+}
+
+.h-text {
+    text-align: center;
+    font-size: 23px;
+    color: white;
+}

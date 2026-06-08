@@ -79,6 +79,24 @@
                         </span>
                     </td>
 
+                   <td>
+                <div class="action-group">
+
+                    <% if(account.status === 'active') { %>
+                    <a href="/accounts/block/<%= account.id %>" class="btn btn-danger">
+                        Block
+                    </a>
+                    <% } %>
+
+                    <% if(account.status === 'blocked') { %>
+                    <a href="/accounts/unblock/<%= account.id %>" class="btn btn-success">
+                        Unblock
+                    </a>
+                    <% } %>
+
+                </div>
+                </td>
+
                 </tr>
 
                 <% }) %>

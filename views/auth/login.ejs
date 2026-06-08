@@ -3,10 +3,15 @@
   <head>
     <title>FraudShield Login</title>
     <link rel="stylesheet" href="/css/auth.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/alert.css" />
   </head>
   <body>
+    <div class="main">
     <div class="container">
+      
       <div class="login-box">
+         <%- include('../partials/flash') %>
         <h2>FraudShield Banking</h2>
         <p>Secure Access Portal</p>
 
@@ -22,6 +27,7 @@
           <button type="submit">Login</button>
         </form>
       </div>
+    </div>
     </div>
   </body>
 </html>

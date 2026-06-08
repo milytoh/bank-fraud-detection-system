@@ -38,19 +38,18 @@
                         <td><%= a.level %></td>
                         <td><%= new Date(a.created_at).toLocaleString() %></td>
                         <td>
+                        <div class="actions">
 
-                       <a href="/transactions/alerts/<%= a.id %>" class="btn">
-                                Review
-                        </a>
+                            <a href="/transactions/alerts/<%= a.id %>" class="btn">
+                            Review
+                            </a>
 
-                        <a
-                            href="/transactions/alerts/resolve/<%= a.id %>"
-                            class="btn btn-success"
-                        >
+                            <a href="/transactions/alerts/resolve/<%= a.id %>" class="btn btn-success">
                             Resolve
-                        </a>
+                            </a>
 
-                    </td>
+                        </div>
+                        </td>
                 </tr>
                 <% }) %>
             </tbody>

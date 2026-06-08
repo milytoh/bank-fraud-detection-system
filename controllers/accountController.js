@@ -111,3 +111,39 @@ exports.show = (req, res) => {
     });
   });
 };
+
+
+exports.block = (req, res) => {
+  db.query(
+    "UPDATE accounts SET status='blocked' WHERE id=?",
+    [req.params.id],
+    (err) => {
+      if (err) {
+        req.flash("error", "Failed to block account");
+        return res.redirect("/accounts");
+      }
+
+      req.flash("success", "Account blocked successfully");
+
+      res.redirect("/accounts");
+    },
+  );
+};
+
+
+exports.unblock = (req, res) => {
+  db.query(
+    "UPDATE accounts SET status='active' WHERE id=?",
+    [req.params.id],
+    (err) => {
+      if (err) {
+        req.flash("error", "Failed to unblock account");
+        return res.redirect("/accounts");
+      }
+
+      req.flash("success", "Account activated successfully");
+
+      res.redirect("/accounts");
+    },
+  );
+};

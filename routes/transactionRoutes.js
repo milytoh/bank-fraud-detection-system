@@ -11,6 +11,7 @@ router.get("/alerts", auth, transactionController.alertsPage);
 router.get("/fraud-dashboard", auth, transactionController.fraudDashboard);
 router.get("/alerts/:id", auth, transactionController.viewAlert);
 router.get("/alerts/resolve/:id", auth, transactionController.resolveAlert);
+router.get("/alerts/review/:id", auth, transactionController.reviewAlert);
 
 
 module.exports = router;
