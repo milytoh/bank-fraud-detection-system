@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', {
+    title: "Fraud Alert Review",
+    pageCss: "/css/alerts.css"
+}) %>
+
+<body>
+
+<%- include('../partials/sidebar') %>
+
+<div class="main">
+
+    <%- include('../partials/topbar', { user }) %>
+
+    <%- include('../partials/flash') %>
+
+    <div class="alert-review-container">
+
+        <div class="review-header">
+            <h1>Fraud Alert Review</h1>
+
+            <span class="alert-badge <%= alert.status %>">
+                <%= alert.status %>
+            </span>
+        </div>
+
+        <div class="review-card">
+
+            <div class="detail-row">
+                <span>Alert ID</span>
+                <strong>#<%= alert.id %></strong>
+            </div>
+
+            <div class="detail-row">
+                <span>Customer</span>
+                <strong><%= alert.fullname || 'Unknown Customer' %></strong>
+            </div>
+
+            <div class="detail-row">
+                <span>Account Number</span>
+                <strong><%= alert.account_number || 'N/A' %></strong>
+            </div>
+
+            <div class="detail-row">
+                <span>Alert Message</span>
+                <strong><%= alert.message %></strong>
+            </div>
+
+            <div class="detail-row">
+                <span>Risk Level</span>
+
+                <span class="risk-level">
+                    <%= alert.level %>
+                </span>
+            </div>
+
+            <div class="detail-row">
+                <span>Created At</span>
+
+                <strong>
+                    <%= new Date(alert.created_at).toLocaleString() %>
+                </strong>
+            </div>
+
+        </div>
+
+        <!-- Investigation Notes -->
+
+        <div class="review-card">
+
+            <h3>Investigation Notes</h3>
+
+            <form
+                action="/transactions/alerts/note/<%= alert.id %>"
+                method="POST"
+            >
+
+                <textarea
+                    name="note"
+                    rows="6"
+                    placeholder="Write investigation notes here..."
+                ><%= alert.investigation_note || '' %></textarea>
+
+                <button
+                    type="submit"
+                    class="btn-primary"
+                >
+                    Save Notes
+                </button>
+
+            </form>
+
+        </div>
+
+        <!-- Actions -->
+
+        <div class="action-buttons">
+
+            <% if(alert.status === 'new') { %>
+
+                <a
+                    href="/transactions/alerts/review/<%= alert.id %>"
+                    class="btn-warning"
+                >
+                    Mark Under Review
+                </a>
+
+            <% } %>
+
+            <% if(alert.status !== 'resolved') { %>
+
+                <a
+                    href="/transactions/alerts/resolve/<%= alert.id %>"
+                    class="btn-success"
+                >
+                    Resolve Alert
+                </a>
+
+            <% } %>
+
+            <a
+                href="/transactions/alerts"
+                class="btn-secondary"
+            >
+                Back To Alerts
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

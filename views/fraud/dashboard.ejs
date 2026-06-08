@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/head', {
+    title: "Fraud Dashboard",
+    pageCss: "/css/dashboard.css"
+}) %>
+
+<body>
+
+<%- include('../partials/sidebar') %>
+
+<div class="main">
+
+<%- include('../partials/topbar', { user }) %>
+
+<h1>Fraud Monitoring Dashboard</h1>
+
+<div class="cards">
+
+    <div class="card">
+        <span>Total Alerts</span>
+        <h2><%= totalAlerts %></h2>
+    </div>
+
+    <div class="card">
+        <span>Risky Accounts</span>
+        <h2><%= riskyAccounts %></h2>
+    </div>
+
+    <div class="card">
+        <span>Large Transactions</span>
+        <h2><%= largeTransactions %></h2>
+    </div>
+
+    <div class="card">
+        <span>Rapid Transactions</span>
+        <h2><%= rapidTransactions %></h2>
+    </div>
+
+</div>
+
+</div>
+
+</body>
+</html>

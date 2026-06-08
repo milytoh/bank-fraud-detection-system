@@ -302,3 +302,90 @@ exports.alertsPage = (req, res) => {
     });
   });
 };
+
+
+exports.fraudDashboard = (req, res) => {
+  const sql = `
+        SELECT *
+        FROM alerts
+        ORDER BY created_at DESC
+    `;
+
+  db.query(sql, (err, alerts) => {
+    if (err) {
+      console.log(err);
+      return res.send("Error loading dashboard");
+    }
+
+    const totalAlerts = alerts.length;
+
+    const largeTransactions = alerts.filter((a) =>
+      a.message.includes("Large transaction"),
+    ).length;
+
+    const rapidTransactions = alerts.filter((a) =>
+      a.message.includes("Rapid"),
+    ).length;
+
+    const riskyAccounts = new Set(alerts.map((a) => a.account_id)).size;
+
+    res.render("fraud/dashboard", {
+      user: req.session.user,
+      alerts,
+      totalAlerts,
+      largeTransactions,
+      rapidTransactions,
+      riskyAccounts,
+    });
+  });
+};
+
+// exports.reviewAlert = (req, res) => {
+//   db.query(
+//     "UPDATE alerts SET status='under_review' WHERE id=?",
+//     [req.params.id],
+//     () => {
+//       req.flash("success", "Alert moved to review");
+//       res.redirect("/transactions/alerts");
+//     },
+//   );
+// };
+
+
+exports.viewAlert = (req, res) => {
+  const sql = `
+    SELECT
+      a.*,
+      ac.account_number,
+      c.fullname
+    FROM alerts a
+    LEFT JOIN accounts ac
+      ON a.account_id = ac.id
+    LEFT JOIN customers c
+      ON ac.customer_id = c.id
+    WHERE a.id = ?
+  `;
+
+  db.query(sql, [req.params.id], (err, result) => {
+    if (err) {
+      console.log(err);
+      return res.redirect("/transactions/alerts");
+    }
+
+    res.render("alerts/view", {
+      user: req.session.user,
+      alert: result[0],
+    });
+  });
+};
+
+exports.resolveAlert = (req, res) => {
+  db.query(
+    "UPDATE alerts SET status='resolved' WHERE id=?",
+    [req.params.id],
+    () => {
+      req.flash("success", "Alert resolved");
+      res.redirect("/transactions/alerts");
+    },
+  );
+};

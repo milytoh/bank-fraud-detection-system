@@ -230,6 +230,12 @@ body {
     color: #ef4444;
 }
 
+.sidebar a i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+}
+
 /* MOBILE RESPONSIVE */
 @media (max-width: 768px) {
 

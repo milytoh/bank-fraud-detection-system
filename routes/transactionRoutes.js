@@ -9,5 +9,9 @@ router.post("/create", auth, transactionController.processTransaction);
 router.get("/history", auth, transactionController.historyPage);
 router.get("/alerts", auth, transactionController.alertsPage);
 router.get("/fraud-dashboard", auth, transactionController.fraudDashboard);
+router.get("/alerts/:id", auth, transactionController.viewAlert);
+router.get("/alerts/resolve/:id", auth, transactionController.resolveAlert);
+
 
 module.exports = router;
+ 
