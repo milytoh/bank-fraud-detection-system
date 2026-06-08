@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Transaction History</title>
+    <link rel="stylesheet" href="/css/user-history.css">
+</head>
+
+<body>
+
+<div class="main">
+
+    <h1>Transaction History</h1>
+
+    <a href="/accounts/user/dashboard" class="back-btn">
+        ← Back to Dashboard
+    </a>
+
+    <div class="table-card">
+
+        <% if (transactions.length === 0) { %>
+
+            <p>No transactions found.</p>
+
+        <% } else { %>
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <% transactions.forEach(t => { %>
+
+                        <tr>
+
+                            <td><%= t.id %></td>
+
+                            <td>
+                                <span class="badge <%= t.type %>">
+                                    <%= t.type %>
+                                </span>
+                            </td>
+
+                            <td>
+                                ₦<%= Number(t.amount).toLocaleString() %>
+                            </td>
+
+                            <td>
+                                <%= t.status %>
+                            </td>
+
+                            <td>
+                                <%= new Date(t.created_at).toLocaleString() %>
+                            </td>
+
+                        </tr>
+
+                    <% }) %>
+
+                </tbody>
+
+            </table>
+
+        <% } %>
+
+    </div>
+
+</div>
+
+</body>
+</html>

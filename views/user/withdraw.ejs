@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Withdraw Funds</title>
+    <link rel="stylesheet" href="/css/user-forms.css">
+</head>
+
+<body>
+
+<div class="form-container">
+   
+
+    <div class="form-card">
+          <%- include('../partials/flash') %>
+        <h2>Withdraw Money</h2>
+
+        <p class="hint">
+            Withdraw funds from your account securely
+        </p>
+
+        <form action="/user/withdraw" method="POST">
+
+            <label>Amount</label>
+            <input 
+                type="number" 
+                name="amount" 
+                required 
+                placeholder="Enter amount"
+            >
+
+            <button type="submit">Withdraw</button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

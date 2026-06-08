@@ -1,0 +1,61 @@
+body{
+    margin:0;
+    background:#0f172a;
+    color:white;
+    font-family:Arial,sans-serif;
+}
+
+.main{
+    max-width:1100px;
+    margin:auto;
+    padding:30px;
+}
+
+.back-btn{
+    display:inline-block;
+    margin-bottom:20px;
+    color:#60a5fa;
+    text-decoration:none;
+}
+
+.table-card{
+    background:#1e293b;
+    border-radius:12px;
+    padding:20px;
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#334155;
+    padding:14px;
+    text-align:left;
+}
+
+td{
+    padding:14px;
+    border-bottom:1px solid #475569;
+}
+
+.badge{
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.deposit{
+    background:#16a34a;
+}
+
+.withdraw{
+    background:#dc2626;
+}
+
+.transfer{
+    background:#2563eb;
+}

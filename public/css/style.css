@@ -1,0 +1,98 @@
+body {
+  margin: 0;
+  font-family: Inter, sans-serif;
+  background: #011230;
+  color: #d8e2ff;
+}
+
+/* container */
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 40px;
+}
+
+/* NAV */
+.nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: rgba(1,18,48,0.7);
+  backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  z-index: 100;
+}
+
+.nav-inner {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 0;
+}
+
+.logo {
+  color: #adc6ff;
+  font-weight: 700;
+}
+
+.links a {
+  margin: 0 10px;
+  color: #aaa;
+  text-decoration: none;
+}
+
+.actions button {
+  margin-left: 10px;
+  padding: 10px 16px;
+  border-radius: 20px;
+  border: none;
+}
+
+.primary {
+  background: #4b8eff;
+  color: white;
+}
+
+/* HERO */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 140px 0 80px;
+  gap: 40px;
+}
+
+.hero h1 {
+  font-size: 48px;
+}
+
+.hero span {
+  color: #4b8eff;
+}
+
+.badge {
+  display: inline-block;
+  padding: 6px 12px;
+  border: 1px solid #4b8eff;
+  border-radius: 20px;
+  color: #4b8eff;
+  font-size: 12px;
+}
+
+/* GLASS */
+.glass-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+  border-radius: 20px;
+  padding: 20px;
+}
+
+/* FEATURES */
+.features {
+  padding: 80px 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}

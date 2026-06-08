@@ -10,9 +10,11 @@
 
 <div class="main">
 
+    <%- include('../partials/flash') %>
+
     <h1>Welcome, <%= user.fullname %></h1>
 
-    <!-- CARDS -->
+    <!-- ACCOUNT CARDS -->
     <div class="cards">
 
         <div class="card">
@@ -22,54 +24,110 @@
 
         <div class="card">
             <h3>Balance</h3>
-            <p>₦<%= account.balance.toLocaleString() %></p>
+            <p>₦<%= Number(account.balance).toLocaleString() %></p>
         </div>
 
     </div>
 
-    <!-- ACTIONS -->
+    <!-- ACTION BUTTONS -->
     <div class="actions">
 
-        <a href="/transactions/create?type=transfer&account=<%= account.id %>">
-            Transfer
+        <a href="/user/deposit">
+            Deposit
         </a>
 
-        <a href="/transactions/create?type=withdraw&account=<%= account.id %>">
+        <a href="/user/withdraw">
             Withdraw
         </a>
 
-        <a href="/transactions/history">
+        <a href="/user/transfer">
+            Transfer
+        </a>
+
+        <a href="/user/history">
             View All Transactions
         </a>
 
     </div>
 
-    <!-- RECENT TRANSACTIONS -->
-    <div style="margin-top: 30px;">
+    <!-- SECURITY ALERTS -->
+    <% if (alerts && alerts.length > 0) { %>
 
-        <h2>Recent Transactions</h2>
+        <div class="alerts-card">
 
-        <div class="card">
+            <h2>⚠ Security Alerts</h2>
 
-            <% if(transactions.length === 0) { %>
-                <p>No transactions yet</p>
-            <% } %>
+            <% alerts.forEach(alert => { %>
 
-            <% transactions.forEach(t => { %>
+                <div class="alert-item">
 
-                <div style="padding:10px 0; border-bottom:1px solid #334155;">
-                    <strong><%= t.type.toUpperCase() %></strong>
-                    <p>₦<%= t.amount %></p>
-                    <small><%= new Date(t.created_at).toLocaleString() %></small>
+                    <strong>
+                        <%= alert.message %>
+                    </strong>
+
+                    <% if (alert.status) { %>
+                        <div class="alert-status">
+                            Status:
+                            <span>
+                                <%= alert.status %>
+                            </span>
+                        </div>
+                    <% } %>
+
+                    <small>
+                        <%= new Date(alert.created_at).toLocaleString() %>
+                    </small>
+
                 </div>
 
             <% }) %>
 
         </div>
 
+    <% } %>
+
+    <!-- RECENT TRANSACTIONS -->
+    <div class="transactions-section">
+
+        <h2>Recent Transactions</h2>
+
+        <div class="card">
+
+            <% if (transactions.length === 0) { %>
+
+                <p>No transactions yet</p>
+
+            <% } else { %>
+
+                <% transactions.forEach(t => { %>
+
+                    <div class="transaction-item">
+
+                        <strong>
+                            <%= t.type.toUpperCase() %>
+                        </strong>
+
+                        <p>
+                            ₦<%= Number(t.amount).toLocaleString() %>
+                        </p>
+
+                        <small>
+                            <%= new Date(t.created_at).toLocaleString() %>
+                        </small>
+
+                    </div>
+
+                <% }) %>
+
+            <% } %>
+
+        </div>
+
     </div>
 
 </div>
+
+<script src="/js/flash.js"></script>
 
 </body>
 </html>

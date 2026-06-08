@@ -10,6 +10,7 @@ const dashboardRoutes = require("./routes/dashboardRoutes");
 const customerRoutes = require("./routes/customerRoutes");
 const accountRoutes = require("./routes/accountRoutes");
 const transactionRoutes = require("./routes/transactionRoutes");
+const userRoutes = require("./routes/userRoutes");
 
 
 
@@ -39,7 +40,9 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Test route
 app.get("/", (req, res) => {
-  res.send("FraudShield System Running 🚀");
+  res.render("index", {
+    title: "FraudShield - Secure Banking",
+  });
 });
 
 
@@ -54,7 +57,7 @@ app.use("/dashboard", dashboardRoutes);
 app.use("/customers", customerRoutes);
 app.use("/accounts", accountRoutes);
 app.use("/transactions", transactionRoutes);
-
+app.use("/user", userRoutes);
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {

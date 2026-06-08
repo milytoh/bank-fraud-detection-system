@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Deposit Funds</title>
+    <link rel="stylesheet" href="/css/user-forms.css">
+</head>
+
+<body>
+
+<div class="form-container">
+
+    <div class="form-card">
+        <%- include('../partials/flash') %>
+
+        <h2>Deposit (Simulation)</h2>
+
+        <p class="hint">
+            This is a simulation deposit for testing purposes.
+        </p>
+
+        <form action="/user/deposit" method="POST">
+
+            <label>Amount</label>
+            <input type="number" name="amount" required placeholder="Enter amount">
+
+            <button type="submit">Deposit</button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Transfer Funds</title>
+    <link rel="stylesheet" href="/css/user-forms.css">
+</head>
+
+<body>
+
+<div class="form-container">
+
+    <div class="form-card">
+
+        <%- include('../partials/flash') %>
+
+        <h2>Transfer Money</h2>
+
+        <p class="hint">
+            Send money securely to another account
+        </p>
+
+        <form action="/user/transfer" method="POST">
+
+            <label>Recipient Account Number</label>
+            <input 
+                type="text" 
+                name="to_account" 
+                required 
+                placeholder="Enter account number"
+            >
+
+            <label>Amount</label>
+            <input 
+                type="number" 
+                name="amount" 
+                required 
+                placeholder="Enter amount"
+            >
+
+            <button type="submit">Send Money</button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>
