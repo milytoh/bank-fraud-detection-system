@@ -3,7 +3,12 @@ const bcrypt = require("bcrypt");
 
 // SHOW LOGIN PAGE
 exports.getLogin = (req, res) => {
-  res.render("auth/login");
+  res.render("auth/login", {
+    customerIsAuthenticated:
+      req.session.user && req.session.user.role === "customer" ? true : false,
+    adminIsAuthenticated:
+      req.session.user && req.session.user.role === "admin" ? true : false,
+  });
 };
 
 // REGISTER USER (TEMP FOR TESTING)
@@ -41,31 +46,38 @@ exports.login = (req, res, next) => {
       const isMatch = await bcrypt.compare(password, user.password);
 
       if (!isMatch) {
-        
-         req.flash("error", "invalid email or password");
-         return res.redirect("/auth/login");
+        req.flash("error", "invalid email or password");
+        return res.redirect("/auth/login");
       }
 
-      req.session.user = user;
+      req.session.user = {
+        role: "admin",
+        admin_id: user.id,
+        fullname: user.fullname,
+        email: user.email,
+      };
 
       res.redirect("/dashboard");
 
       //   res.send("Login successful");
     },
   );
-
- 
 };
 
 exports.logout = (req, res) => {
   req.session.destroy(() => {
-    res.redirect("/auth/login");
+    res.redirect("/");
   });
 };
 
 // SHOW LOGIN PAGE
 exports.showCustomerLogin = (req, res) => {
-  res.render("auth/customer-login");
+  res.render("auth/customer-login", {
+    customerIsAuthenticated:
+      req.session.user && req.session.user.role === "customer" ? true : false,
+    adminIsAuthenticated:
+      req.session.user && req.session.user.role === "admin" ? true : false,
+  });
 };
 
 exports.customerLogin = (req, res) => {
@@ -114,5 +126,11 @@ exports.customerLogin = (req, res) => {
 
     req.flash("success", "Login successful");
     return res.redirect("/accounts/user/dashboard");
+  });
+};
+
+exports.customerLogout = (req, res) => {
+  req.session.destroy(() => {
+    res.redirect("/auth/customer-login");
   });
 };

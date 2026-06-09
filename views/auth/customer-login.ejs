@@ -1,35 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <title>Customer Login - FraudShield</title>
-    <link rel="stylesheet" href="/css/auth.css">
-    
-</head>
-<body>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/auth.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/dashboard.css" />
+  </head>
+  <body>
+    <%- include('../partials/topnav') %>
 
-<div class="auth-container">
-
-    <div class="auth-card">
-
+    <div class="auth-container">
+      <div class="auth-card">
+        <%- include('../partials/flash') %>
         <h2 class="h-text">Customer Login</h2>
         <p>Login using your Email and Account Number</p>
 
         <form action="/auth/customer-login" method="POST">
+          <label>Email</label>
+          <input type="email" name="email" required />
 
-            <label>Email</label>
-            <input type="email" name="email" required>
+          <label>Account Number</label>
+          <input type="text" name="account_number" required />
 
-            <label>Account Number</label>
-            <input type="text" name="account_number" required>
-
-            <button type="submit">Login</button>
-
+          <button type="submit">Login</button>
         </form>
-
+      </div>
     </div>
 
-</div>
-
-</body>
+    <script src="/js/main.js"></script>
+  </body>
 </html>

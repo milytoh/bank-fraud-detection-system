@@ -1,897 +1,490 @@
 <!DOCTYPE html>
-
-<html class="dark" lang="en">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>FraudShield - Secure Banking Powered by AI</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-      rel="stylesheet"
-    />
-    <script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              "primary-fixed": "#d8e2ff",
-              "on-secondary-fixed-variant": "#39475f",
-              "on-tertiary-fixed": "#191c1e",
-              "error-container": "#93000a",
-              primary: "#adc6ff",
-              "on-primary": "#002e69",
-              secondary: "#b9c7e4",
-              "on-secondary": "#233148",
-              "secondary-fixed-dim": "#b9c7e4",
-              "on-tertiary-container": "#272a2c",
-              "on-tertiary-fixed-variant": "#444749",
-              "primary-container": "#4b8eff",
-              "secondary-container": "#3c4962",
-              "on-secondary-fixed": "#0d1c32",
-              "tertiary-fixed-dim": "#c4c7c9",
-              background: "#011230",
-              "primary-fixed-dim": "#adc6ff",
-              "surface-variant": "#253453",
-              "inverse-on-surface": "#20304f",
-              "surface-container-highest": "#253453",
-              error: "#ffb4ab",
-              "surface-container-low": "#091b39",
-              "on-primary-container": "#00285c",
-              "surface-container-high": "#192a48",
-              outline: "#8b90a0",
-              "tertiary-container": "#8e9193",
-              "inverse-primary": "#005bc1",
-              "outline-variant": "#414755",
-              surface: "#011230",
-              "on-error": "#690005",
-              "on-background": "#d8e2ff",
-              "surface-container": "#0e1f3d",
-              tertiary: "#c4c7c9",
-              "on-primary-fixed": "#001a41",
-              "surface-container-lowest": "#000d27",
-              "secondary-fixed": "#d6e3ff",
-              "on-error-container": "#ffdad6",
-              "inverse-surface": "#d8e2ff",
-              "on-surface": "#d8e2ff",
-              "surface-tint": "#adc6ff",
-              "on-tertiary": "#2d3133",
-              "on-primary-fixed-variant": "#004493",
-              "on-secondary-container": "#abb9d6",
-              "surface-bright": "#293958",
-              "on-surface-variant": "#c1c6d7",
-              "tertiary-fixed": "#e0e3e5",
-              "surface-dim": "#011230",
-            },
-            borderRadius: {
-              DEFAULT: "0.25rem",
-              lg: "0.5rem",
-              xl: "0.75rem",
-              full: "9999px",
-            },
-            spacing: {
-              unit: "8px",
-              "stack-md": "16px",
-              "stack-lg": "32px",
-              "container-padding-mobile": "20px",
-              gutter: "24px",
-              "container-padding-desktop": "40px",
-              "stack-sm": "8px",
-            },
-            fontFamily: {
-              "numeric-data": ["Inter"],
-              "label-caps": ["Inter"],
-              "body-md": ["Inter"],
-              "display-lg-mobile": ["Inter"],
-              "headline-md": ["Inter"],
-              "display-lg": ["Inter"],
-              "body-lg": ["Inter"],
-            },
-            fontSize: {
-              "numeric-data": [
-                "20px",
-                {
-                  lineHeight: "24px",
-                  letterSpacing: "-0.01em",
-                  fontWeight: "500",
-                },
-              ],
-              "label-caps": [
-                "12px",
-                {
-                  lineHeight: "16px",
-                  letterSpacing: "0.05em",
-                  fontWeight: "600",
-                },
-              ],
-              "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
-              "display-lg-mobile": [
-                "32px",
-                {
-                  lineHeight: "40px",
-                  letterSpacing: "-0.02em",
-                  fontWeight: "700",
-                },
-              ],
-              "headline-md": [
-                "24px",
-                {
-                  lineHeight: "32px",
-                  letterSpacing: "-0.01em",
-                  fontWeight: "600",
-                },
-              ],
-              "display-lg": [
-                "48px",
-                {
-                  lineHeight: "56px",
-                  letterSpacing: "-0.02em",
-                  fontWeight: "700",
-                },
-              ],
-              "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }],
-            },
-          },
-        },
-      };
-    </script>
-    <style>
-      .glass {
-        background: rgba(17, 34, 64, 0.6);
-        backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-      }
-      .glass-card {
-        background: rgba(25, 42, 72, 0.4);
-        backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      }
-      .glass-card:hover {
-        border-color: rgba(0, 122, 255, 0.5);
-        box-shadow: 0 0 20px rgba(0, 122, 255, 0.15);
-        transform: translateY(-4px);
-      }
-      .security-glow {
-        box-shadow: 0 0 40px rgba(0, 122, 255, 0.1);
-      }
-      .primary-glow:hover {
-        box-shadow: 0 0 20px rgba(0, 122, 255, 0.5);
-      }
-      .bg-void {
-        background-color: #011230;
-        background-image: radial-gradient(
-          circle at 50% 50%,
-          #0a192f 0%,
-          #011230 100%
-        );
-      }
-      .material-symbols-outlined {
-        font-variation-settings:
-          "FILL" 0,
-          "wght" 400,
-          "GRAD" 0,
-          "opsz" 24;
-      }
-      .active-nav {
-        border-bottom: 2px solid #adc6ff;
-        color: #adc6ff;
-      }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FraudShield – Secure Banking Powered by AI</title>
+    <link rel="stylesheet" href="/css/style.css" />
   </head>
-  <body
-    class="bg-void text-on-surface font-body-md overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container"
-  >
-    <!-- TopNavBar -->
-    <nav
-      class="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-xl border-b border-white/10 shadow-sm transition-all duration-300"
-    >
-      <div
-        class="flex justify-between items-center px-container-padding-desktop max-w-[1440px] mx-auto h-20"
-      >
-        <div class="flex items-center gap-2">
-          <span class="font-headline-md text-headline-md font-bold text-primary"
-            >FraudShield</span
-          >
-        </div>
-        <div class="hidden md:flex items-center gap-stack-lg">
-          <a
-            class="font-body-md text-body-md text-primary border-b-2 border-primary pb-1"
-            href="#"
-            >Personal</a
-          >
-          <a
-            class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors"
-            href="#"
-            >Wealth</a
-          >
-          <a
-            class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors"
-            href="#"
-            >Security</a
-          >
-          <a
-            class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors"
-            href="#"
-            >Support</a
-          >
-        </div>
-        <div class="flex items-center gap-stack-md">
-          <button
-            class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors px-4 py-2"
-          >
+  <body>
+    <!-- ===== NAVIGATION ===== -->
+    <nav class="nav" id="nav">
+      <div class="nav__inner">
+        <a class="nav__brand" href="/">FraudShield</a>
+
+        <button
+          class="nav__toggle"
+          type="button"
+          aria-label="Toggle navigation menu"
+          aria-expanded="false"
+          aria-controls="navMenu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <div class="nav__menu" id="navMenu">
+          <div class="nav__links">
+            <a href="#" class="active">Personal</a>
+            <a href="#">Wealth</a>
+            <a href="#">Security</a>
+            <a href="#">Support</a>
+          </div>
+
+        <div class="nav__actions">
+
+     <% if (customerIsAuthenticated) { %>
+
+        <a class="btn-ghost" href="/accounts/user/dashboard">
+            My Dashboard
+        </a>
+
+        <a class="btn-primary" href="/auth/logout">
+            Logout
+        </a>
+ 
+     <% } else if (adminIsAuthenticated) { %>
+
+        <a class="btn-ghost" href="/dashboard">
+            Admin Dashboard
+        </a>
+
+        <a class="btn-primary" href="/auth/logout">
+            Logout
+        </a>
+
+     <% } else { %>
+
+        <a class="btn-ghost" href="/auth/customer-login">
             Login
-          </button>
-          <button
-            class="bg-primary-container text-on-primary-container font-label-caps text-label-caps px-6 py-2.5 rounded-full primary-glow transition-all active:scale-95 duration-150"
-          >
-            Open Account
-          </button>
+        </a>
+
+        <a class="btn-primary" href="/auth/login">
+            Admin Login
+        </a>
+
+     <% } %>
+
+      </div>
         </div>
       </div>
     </nav>
-    <main class="pt-20">
-      <!-- Hero Section -->
-      <section
-        class="relative min-h-[90vh] flex items-center px-container-padding-desktop max-w-[1440px] mx-auto overflow-hidden"
-      >
-        <div class="grid lg:grid-cols-2 gap-gutter items-center z-10">
-          <div class="space-y-stack-lg">
-            <div
-              class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary"
-            >
-              <span class="material-symbols-outlined text-[18px]"
-                >verified_user</span
-              >
-              <span class="font-label-caps text-label-caps"
-                >Next-Gen Digital Security</span
-              >
+
+    <!-- ===== MAIN ===== -->
+    <main>
+      <!-- HERO -->
+      <section class="hero reveal" id="hero">
+        <div class="hero__grid">
+          <!-- Left: Copy -->
+          <div class="hero__content">
+            <div class="hero__badge">
+              <span class="material-symbols-outlined">verified_user</span>
+              Next-Gen Digital Security
             </div>
-            <h1
-              class="font-display-lg text-display-lg text-white leading-tight"
-            >
-              Secure Banking Powered by
-              <span class="text-primary">Fraud Detection</span>
+
+            <h1 class="hero__headline">
+              Secure Banking Powered by<br />
+              <span>Fraud Detection</span>
             </h1>
-            <p
-              class="font-body-lg text-body-lg text-on-surface-variant max-w-xl"
-            >
+
+            <p class="hero__subtext">
               Protecting customer transactions through intelligent fraud
               monitoring, real-time alerts, and secure digital banking.
               Experience institutional stability merged with cutting-edge tech.
             </p>
-            <div class="flex flex-wrap gap-stack-md pt-4">
-              <a
-                href="/auth/customer-login"
-                class="bg-primary-container text-on-primary-container px-8 py-4 rounded-xl font-headline-md text-headline-md font-bold primary-glow transition-all active:scale-95 inline-block text-center"
-              >
-                Customer Login
-              </a>
 
-              <a
-                href="/auth/login"
-                class="glass border border-white/20 text-white px-8 py-4 rounded-xl font-headline-md text-headline-md font-bold hover:bg-white/10 transition-all active:scale-95 inline-block text-center"
+            <div class="hero__actions">
+              <a href="/auth/customer-login" class="btn-hero-primary"
+                >Customer Login</a
               >
-                Admin Login
-              </a>
+              <a href="/auth/login" class="btn-hero-secondary">Admin Login</a>
             </div>
           </div>
-          <div class="relative hidden lg:block">
-            <div
-              class="absolute -top-20 -right-20 w-96 h-96 bg-primary/20 rounded-full blur-[100px]"
-            ></div>
-            <div
-              class="glass p-4 rounded-[2.5rem] border border-white/10 shadow-2xl relative"
-            >
+
+          <!-- Right: Visual -->
+          <div class="hero__visual">
+            <div class="hero__glow"></div>
+            <div class="glass hero__frame">
               <img
-                class="rounded-[2rem] w-full h-auto object-cover"
-                data-alt="A futuristic digital dashboard displayed on a high-end laptop, showing intricate fraud detection maps and real-time security analytics. The screen glows with neon blue and cyan data visualizations against a backdrop of a blurred, luxury glass-walled office at night overlooking a cityscape. The lighting is moody and premium, emphasizing state-of-the-art cybersecurity technology."
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuDeRrmN-lA300irNzpBnbXbfXwaUTv-3x5QiJXmvMPNFJyv2Nb5LMQLAG6H5pu5nPCNU9WPCuwH0PjB8yO5FaRsp15J6K3Lofv0DelQsJ8D2pBwKUvR1lSNxlSelgwa3CF1GPDf9dpRSbATlvG0H28cIAxuciGPVYOGihfm2bzgBSj-sCuLYQHcfDwbMjHgHBUvou1UPjO7X6tCLAI9Nho_6bYtHOUt5tM7olja4c8mEvxt-kPGkrXn8bQ-dKsuDw-Hoqva8K_dLr08"
+                alt="AI-powered fraud detection dashboard on a high-end laptop"
               />
-              <div
-                class="absolute -bottom-10 -left-10 glass-card p-6 rounded-2xl w-64"
-              >
-                <div class="flex items-center gap-3 mb-2">
-                  <span
-                    class="w-2 h-2 rounded-full bg-green-400 animate-pulse"
-                  ></span>
-                  <span class="font-label-caps text-label-caps text-primary"
-                    >System Online</span
-                  >
+              <div class="hero__status-chip">
+                <div class="hero__status-row">
+                  <span class="pulse-dot"></span>
+                  <span class="hero__status-label">System Online</span>
                 </div>
-                <p class="font-numeric-data text-numeric-data text-white">
-                  Active Scans: 1.4M
-                </p>
+                <p class="hero__status-value">Active Scans: 1.4M</p>
               </div>
             </div>
           </div>
         </div>
       </section>
-      <!-- Features Bento -->
-      <section
-        class="py-stack-lg px-container-padding-desktop max-w-[1440px] mx-auto"
-      >
-        <div class="text-center mb-stack-lg">
-          <h2 class="font-headline-md text-headline-md text-white mb-2">
-            Uncompromising Security Features
-          </h2>
-          <p class="text-on-surface-variant">
+
+      <!-- FEATURES -->
+      <section class="features reveal">
+        <div class="section-header">
+          <h2 class="section-title">Uncompromising Security Features</h2>
+          <p class="section-subtitle">
             Built on layers of invisible protection
           </p>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
-          <div class="glass-card p-stack-lg rounded-2xl flex flex-col gap-4">
-            <div
-              class="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center text-primary"
-            >
-              <span class="material-symbols-outlined text-[32px]"
-                >security</span
-              >
+
+        <div class="features__grid">
+          <div class="glass-card feature-card">
+            <div class="feature-card__icon">
+              <span class="material-symbols-outlined">security</span>
             </div>
-            <h3 class="font-headline-md text-headline-md text-white">
-              Fraud Detection
-            </h3>
-            <p class="text-on-surface-variant font-body-md">
+            <h3 class="feature-card__title">Fraud Detection</h3>
+            <p class="feature-card__body">
               Advanced ML algorithms scanning every transaction for suspicious
               patterns 24/7.
             </p>
           </div>
-          <div class="glass-card p-stack-lg rounded-2xl flex flex-col gap-4">
-            <div
-              class="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center text-primary"
-            >
-              <span class="material-symbols-outlined text-[32px]"
-                >account_balance</span
-              >
+
+          <div class="glass-card feature-card">
+            <div class="feature-card__icon">
+              <span class="material-symbols-outlined">account_balance</span>
             </div>
-            <h3 class="font-headline-md text-headline-md text-white">
-              Secure Transactions
-            </h3>
-            <p class="text-on-surface-variant font-body-md">
+            <h3 class="feature-card__title">Secure Transactions</h3>
+            <p class="feature-card__body">
               End-to-end encryption using military-grade standards for all
               financial operations.
             </p>
           </div>
-          <div class="glass-card p-stack-lg rounded-2xl flex flex-col gap-4">
-            <div
-              class="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center text-primary"
-            >
-              <span class="material-symbols-outlined text-[32px]"
-                >monitoring</span
-              >
+
+          <div class="glass-card feature-card">
+            <div class="feature-card__icon">
+              <span class="material-symbols-outlined">monitoring</span>
             </div>
-            <h3 class="font-headline-md text-headline-md text-white">
-              Real-Time Monitoring
-            </h3>
-            <p class="text-on-surface-variant font-body-md">
+            <h3 class="feature-card__title">Real-Time Monitoring</h3>
+            <p class="feature-card__body">
               Live dashboard for instant visibility into account activity across
               the globe.
             </p>
           </div>
-          <div class="glass-card p-stack-lg rounded-2xl flex flex-col gap-4">
-            <div
-              class="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center text-primary"
-            >
-              <span class="material-symbols-outlined text-[32px]"
-                >verified</span
-              >
+
+          <div class="glass-card feature-card">
+            <div class="feature-card__icon">
+              <span class="material-symbols-outlined">verified</span>
             </div>
-            <h3 class="font-headline-md text-headline-md text-white">
-              Account Protection
-            </h3>
-            <p class="text-on-surface-variant font-body-md">
+            <h3 class="feature-card__title">Account Protection</h3>
+            <p class="feature-card__body">
               Multi-layer authentication and biometric locks for total digital
               asset control.
             </p>
           </div>
         </div>
       </section>
-      <!-- System Overview -->
-      <section
-        class="py-stack-lg bg-surface-container-low/50 border-y border-white/5"
-      >
-        <div
-          class="px-container-padding-desktop max-w-[1440px] mx-auto grid lg:grid-cols-2 gap-20 items-center"
-        >
-          <div class="order-2 lg:order-1">
-            <div
-              class="glass border border-white/10 rounded-3xl overflow-hidden shadow-2xl"
-            >
-              <img
-                class="w-full"
-                data-alt="A sophisticated white UI dashboard interface with soft neumorphic and glassmorphic elements. The screen displays financial charts, a balance of $22,781, spending trends, and a clear 'Fraud Detection Alerts' panel with red warning indicators. The overall design is clean, professional, and ultra-modern, using a palette of deep blues and vibrant safety-red for critical alerts."
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwO6-8p56gw9FvEIYt_fpkx2tT-2wcusw1BPvPMPy9b1fNMEFriN1WMbbGp7Cv8Te-PR2AlKbHwxEjz2c38tv2XPQpWqVD5R7ajv7PpQIEERBCF64xecbgDVeleMusp4CWsMfKhTBCcNh9W6XSqQKWvkJ5gnTccVH5mz-U4ZZKMhZ7c7n1Sf4cAIXaCQIHpL1SVdmWak0bT6x_KnUeBe7quf5g4DJrWNsoGO4bHEmCbiKBEI5fE6cHuEMkfNgqliQHaSM_wZaom4fX"
-              />
-            </div>
+
+      <!-- SYSTEM OVERVIEW -->
+      <section class="overview reveal">
+        <div class="overview__inner">
+          <div class="overview__image-wrap">
+            <img
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwO6-8p56gw9FvEIYt_fpkx2tT-2wcusw1BPvPMPy9b1fNMEFriN1WMbbGp7Cv8Te-PR2AlKbHwxEjz2c38tv2XPQpWqVD5R7ajv7PpQIEERBCF64xecbgDVeleMusp4CWsMfKhTBCcNh9W6XSqQKWvkJ5gnTccVH5mz-U4ZZKMhZ7c7n1Sf4cAIXaCQIHpL1SVdmWak0bT6x_KnUeBe7quf5g4DJrWNsoGO4bHEmCbiKBEI5fE6cHuEMkfNgqliQHaSM_wZaom4fX"
+              alt="FraudShield analytics dashboard showing fraud alerts and financial data"
+            />
           </div>
-          <div class="order-1 lg:order-2 space-y-stack-md">
-            <h2 class="font-display-lg text-display-lg text-white">
-              The Intelligence <br /><span class="text-primary"
-                >Behind the Shield</span
-              >
+
+          <div class="overview__content">
+            <h2 class="overview__headline">
+              The Intelligence<br />
+              <span>Behind the Shield</span>
             </h2>
-            <p class="text-body-lg text-on-surface-variant">
+
+            <p class="overview__body">
               Our system doesn't just react—it predicts. By analyzing billions
               of data points, FraudShield Bank creates a custom security profile
               for every user, identifying anomalies before they become threats.
             </p>
-            <ul class="space-y-4 pt-6">
-              <li class="flex items-center gap-4 text-white">
-                <span class="material-symbols-outlined text-primary"
-                  >check_circle</span
-                >
+
+            <ul class="overview__list">
+              <li>
+                <span class="material-symbols-outlined">check_circle</span>
                 Adaptive Risk Scoring
               </li>
-              <li class="flex items-center gap-4 text-white">
-                <span class="material-symbols-outlined text-primary"
-                  >check_circle</span
-                >
+              <li>
+                <span class="material-symbols-outlined">check_circle</span>
                 Geographic Login Verification
               </li>
-              <li class="flex items-center gap-4 text-white">
-                <span class="material-symbols-outlined text-primary"
-                  >check_circle</span
-                >
+              <li>
+                <span class="material-symbols-outlined">check_circle</span>
                 Behavioral Biometrics Analysis
               </li>
             </ul>
           </div>
         </div>
       </section>
-      <!-- How It Works -->
-      <section
-        class="py-stack-lg px-container-padding-desktop max-w-[1440px] mx-auto"
-      >
-        <h2
-          class="font-display-lg text-display-lg text-center text-white mb-stack-lg"
-        >
-          How It Works
-        </h2>
-        <div class="relative">
-          <div
-            class="absolute top-1/2 left-0 w-full h-[2px] bg-primary/20 hidden lg:block -translate-y-1/2"
-          ></div>
-          <div
-            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter relative"
-          >
-            <div class="flex flex-col items-center text-center space-y-4 group">
-              <div
-                class="w-16 h-16 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold text-xl relative z-10 group-hover:scale-110 transition-transform"
-              >
-                1
-              </div>
-              <h4 class="font-headline-md text-headline-md text-white">
-                Transaction
-              </h4>
-              <p class="text-on-surface-variant font-label-caps">
+
+      <!-- HOW IT WORKS -->
+      <section class="how-it-works reveal">
+        <h2 class="hiw__headline">How It Works</h2>
+
+        <div class="hiw__steps-wrap">
+          <div class="hiw__connector" aria-hidden="true"></div>
+
+          <div class="hiw__steps">
+            <div class="hiw__step">
+              <div class="hiw__step-number">1</div>
+              <h4 class="hiw__step-title">Transaction</h4>
+              <p class="hiw__step-desc">
                 Customer initiates a digital payment or transfer.
               </p>
             </div>
-            <div class="flex flex-col items-center text-center space-y-4 group">
-              <div
-                class="w-16 h-16 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold text-xl relative z-10 group-hover:scale-110 transition-transform"
-              >
-                2
-              </div>
-              <h4 class="font-headline-md text-headline-md text-white">
-                Analysis
-              </h4>
-              <p class="text-on-surface-variant font-label-caps">
-                AI Engine cross-references 100+ risk variables in milliseconds.
+            <div class="hiw__step">
+              <div class="hiw__step-number">2</div>
+              <h4 class="hiw__step-title">Analysis</h4>
+              <p class="hiw__step-desc">
+                AI engine cross-references 100+ risk variables in milliseconds.
               </p>
             </div>
-            <div class="flex flex-col items-center text-center space-y-4 group">
-              <div
-                class="w-16 h-16 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold text-xl relative z-10 group-hover:scale-110 transition-transform"
-              >
-                3
-              </div>
-              <h4 class="font-headline-md text-headline-md text-white">
-                Flagging
-              </h4>
-              <p class="text-on-surface-variant font-label-caps">
+            <div class="hiw__step">
+              <div class="hiw__step-number">3</div>
+              <h4 class="hiw__step-title">Flagging</h4>
+              <p class="hiw__step-desc">
                 Suspicious activity is instantly isolated for verification.
               </p>
             </div>
-            <div class="flex flex-col items-center text-center space-y-4 group">
-              <div
-                class="w-16 h-16 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold text-xl relative z-10 group-hover:scale-110 transition-transform"
-              >
-                4
-              </div>
-              <h4 class="font-headline-md text-headline-md text-white">
-                Resolution
-              </h4>
-              <p class="text-on-surface-variant font-label-caps">
+            <div class="hiw__step">
+              <div class="hiw__step-number">4</div>
+              <h4 class="hiw__step-title">Resolution</h4>
+              <p class="hiw__step-desc">
                 Secure approval via app or instant fraud prevention.
               </p>
             </div>
           </div>
         </div>
       </section>
-      <!-- Stats Grid -->
-      <section
-        class="py-stack-lg px-container-padding-desktop max-w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter"
-      >
-        <div
-          class="glass-card p-stack-lg rounded-2xl border-l-4 border-l-primary"
-        >
-          <p
-            class="font-numeric-data text-[40px] leading-tight text-white font-bold mb-2"
-          >
-            99.9%
-          </p>
-          <p class="text-primary font-label-caps uppercase">
-            Secure Transactions
-          </p>
+
+      <!-- STATS -->
+      <section class="stats reveal">
+        <div class="glass-card stat-card">
+          <p class="stat-card__number">99.9%</p>
+          <p class="stat-card__label">Secure Transactions</p>
         </div>
-        <div
-          class="glass-card p-stack-lg rounded-2xl border-l-4 border-l-primary"
-        >
-          <p
-            class="font-numeric-data text-[40px] leading-tight text-white font-bold mb-2"
-          >
-            24/7
-          </p>
-          <p class="text-primary font-label-caps uppercase">
-            Real-Time Monitoring
-          </p>
+        <div class="glass-card stat-card">
+          <p class="stat-card__number">24/7</p>
+          <p class="stat-card__label">Real-Time Monitoring</p>
         </div>
-        <div
-          class="glass-card p-stack-lg rounded-2xl border-l-4 border-l-primary"
-        >
-          <p
-            class="font-numeric-data text-[40px] leading-tight text-white font-bold mb-2"
-          >
-            &lt; 1s
-          </p>
-          <p class="text-primary font-label-caps uppercase">
-            Instant Fraud Alerts
-          </p>
+        <div class="glass-card stat-card">
+          <p class="stat-card__number">&lt; 1s</p>
+          <p class="stat-card__label">Instant Fraud Alerts</p>
         </div>
-        <div
-          class="glass-card p-stack-lg rounded-2xl border-l-4 border-l-primary"
-        >
-          <p
-            class="font-numeric-data text-[40px] leading-tight text-white font-bold mb-2"
-          >
-            5M+
-          </p>
-          <p class="text-primary font-label-caps uppercase">
-            Protected Accounts
-          </p>
+        <div class="glass-card stat-card">
+          <p class="stat-card__number">5M+</p>
+          <p class="stat-card__label">Protected Accounts</p>
         </div>
       </section>
-      <!-- Login Access Portals -->
-      <section
-        class="py-stack-lg px-container-padding-desktop max-w-[1440px] mx-auto"
-      >
-        <div class="glass rounded-[3rem] overflow-hidden grid lg:grid-cols-2">
-          <div
-            class="p-12 md:p-20 border-r border-white/10 space-y-stack-md hover:bg-primary/5 transition-all"
-          >
-            <div
-              class="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center text-primary mb-6"
-            >
-              <span class="material-symbols-outlined text-[40px]">person</span>
+
+      <!-- PORTALS -->
+      <section class="portals reveal">
+        <div class="portals__grid">
+          <!-- Customer Portal -->
+          <div class="portal portal--customer">
+            <div class="portal__icon portal__icon--primary">
+              <span class="material-symbols-outlined">person</span>
             </div>
-            <h2 class="font-display-lg text-display-lg text-white">
-              Customer Portal
-            </h2>
-            <p class="text-on-surface-variant body-lg mb-8">
+            <h2 class="portal__title">Customer Portal</h2>
+            <p class="portal__desc">
               Access your accounts, manage assets, and view security alerts from
               anywhere in the world.
             </p>
-            <ul class="space-y-4 mb-10">
-              <li class="flex items-center gap-3 text-on-surface-variant">
-                <span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Secure
+            <ul class="portal__features">
+              <li>
+                <span class="portal__dot portal__dot--primary"></span> Secure
                 Biometric Login
               </li>
-              <li class="flex items-center gap-3 text-on-surface-variant">
-                <span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Global
+              <li>
+                <span class="portal__dot portal__dot--primary"></span> Global
                 Card Control
               </li>
-              <li class="flex items-center gap-3 text-on-surface-variant">
-                <span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Wealth
+              <li>
+                <span class="portal__dot portal__dot--primary"></span> Wealth
                 Management Tools
               </li>
             </ul>
-           <a href="/auth/customer-login"
-  class="w-full py-5 bg-primary text-on-primary font-bold rounded-2xl primary-glow active:scale-95 transition-all inline-block text-center">
-  Launch Personal Portal
-</a>
-          </div>
-          <div
-            class="p-12 md:p-20 space-y-stack-md bg-surface-container-high/30 hover:bg-primary/5 transition-all"
-          >
-            <div
-              class="w-16 h-16 bg-error/20 rounded-2xl flex items-center justify-center text-error mb-6"
+            <a href="/auth/customer-login" class="btn-portal-primary"
+              >Launch Personal Portal</a
             >
-              <span class="material-symbols-outlined text-[40px]"
+          </div>
+
+          <!-- Admin Hub -->
+          <div class="portal portal--admin">
+            <div class="portal__icon portal__icon--error">
+              <span class="material-symbols-outlined"
                 >admin_panel_settings</span
               >
             </div>
-            <h2 class="font-display-lg text-display-lg text-white">
-              Admin Hub
-            </h2>
-            <p class="text-on-surface-variant body-lg mb-8">
+            <h2 class="portal__title">Admin Hub</h2>
+            <p class="portal__desc">
               High-level system oversight, fraud pattern analysis, and
               institutional security controls.
             </p>
-            <ul class="space-y-4 mb-10">
-              <li class="flex items-center gap-3 text-on-surface-variant">
-                <span class="w-1.5 h-1.5 rounded-full bg-error"></span> Threat
+            <ul class="portal__features">
+              <li>
+                <span class="portal__dot portal__dot--error"></span> Threat
                 Intel Dashboard
               </li>
-              <li class="flex items-center gap-3 text-on-surface-variant">
-                <span class="w-1.5 h-1.5 rounded-full bg-error"></span> Global
+              <li>
+                <span class="portal__dot portal__dot--error"></span> Global
                 Transaction Review
               </li>
-              <li class="flex items-center gap-3 text-on-surface-variant">
-                <span class="w-1.5 h-1.5 rounded-full bg-error"></span> Policy
+              <li>
+                <span class="portal__dot portal__dot--error"></span> Policy
                 Enforcement AI
               </li>
             </ul>
-            <a href="/auth/login"
-  class="w-full py-5 glass border border-error/50 text-error font-bold rounded-2xl hover:bg-error/10 active:scale-95 transition-all inline-block text-center">
-  Access Admin Terminal
-</a>
+            <a href="/auth/login" class="btn-portal-error"
+              >Access Admin Terminal</a
+            >
           </div>
         </div>
       </section>
-      <!-- Testimonials -->
-      <section
-        class="py-stack-lg px-container-padding-desktop max-w-[1440px] mx-auto"
-      >
-        <h2
-          class="font-display-lg text-display-lg text-center text-white mb-stack-lg"
-        >
-          Trusted by Leaders
-        </h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
-          <div class="glass-card p-stack-lg rounded-2xl space-y-6">
-            <div class="flex text-primary">
+
+      <!-- TESTIMONIALS -->
+      <section class="testimonials reveal">
+        <h2 class="testimonials__headline">Trusted by Leaders</h2>
+
+        <div class="testimonials__grid">
+          <div class="glass-card testimonial-card">
+            <div class="stars">
               <span class="material-symbols-outlined">star</span>
               <span class="material-symbols-outlined">star</span>
               <span class="material-symbols-outlined">star</span>
               <span class="material-symbols-outlined">star</span>
               <span class="material-symbols-outlined">star</span>
             </div>
-            <p class="italic text-on-surface font-body-lg">
+            <p class="testimonial-card__quote">
               "The level of detail in the security monitoring is unparalleled. I
               feel completely secure knowing FraudShield is watching my assets."
             </p>
-            <div class="flex items-center gap-4">
-              <div
-                class="w-12 h-12 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center"
-              >
+            <div class="testimonial-card__author">
+              <div class="author-avatar">
                 <span class="material-symbols-outlined">person</span>
               </div>
               <div>
-                <p class="text-white font-bold">Jonathan Vance</p>
-                <p class="text-on-surface-variant text-label-caps">
-                  CEO, Vance Capital
-                </p>
+                <p class="author-name">Jonathan Vance</p>
+                <p class="author-role">CEO, Vance Capital</p>
               </div>
             </div>
           </div>
-          <div class="glass-card p-stack-lg rounded-2xl space-y-6">
-            <div class="flex text-primary">
+
+          <div class="glass-card testimonial-card">
+            <div class="stars">
               <span class="material-symbols-outlined">star</span>
               <span class="material-symbols-outlined">star</span>
               <span class="material-symbols-outlined">star</span>
               <span class="material-symbols-outlined">star</span>
               <span class="material-symbols-outlined">star</span>
             </div>
-            <p class="italic text-on-surface font-body-lg">
+            <p class="testimonial-card__quote">
               "FraudShield detected a spoofed transaction in real-time that
               other banks missed. Their technology is truly next-generation."
             </p>
-            <div class="flex items-center gap-4">
-              <div
-                class="w-12 h-12 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center"
-              >
+            <div class="testimonial-card__author">
+              <div class="author-avatar">
                 <span class="material-symbols-outlined">person</span>
               </div>
               <div>
-                <p class="text-white font-bold">Dr. Elena Rodriguez</p>
-                <p class="text-on-surface-variant text-label-caps">
-                  CTO, SecureLink
-                </p>
+                <p class="author-name">Dr. Elena Rodriguez</p>
+                <p class="author-role">CTO, SecureLink</p>
               </div>
             </div>
           </div>
-          <div class="glass-card p-stack-lg rounded-2xl space-y-6">
-            <div class="flex text-primary">
+
+          <div class="glass-card testimonial-card">
+            <div class="stars">
               <span class="material-symbols-outlined">star</span>
               <span class="material-symbols-outlined">star</span>
               <span class="material-symbols-outlined">star</span>
               <span class="material-symbols-outlined">star</span>
               <span class="material-symbols-outlined">star</span>
             </div>
-            <p class="italic text-on-surface font-body-lg">
+            <p class="testimonial-card__quote">
               "The interface is beautiful, but the peace of mind is what keeps
               me here. It's the standard for premium banking security."
             </p>
-            <div class="flex items-center gap-4">
-              <div
-                class="w-12 h-12 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center"
-              >
+            <div class="testimonial-card__author">
+              <div class="author-avatar">
                 <span class="material-symbols-outlined">person</span>
               </div>
               <div>
-                <p class="text-white font-bold">Marcus Thorne</p>
-                <p class="text-on-surface-variant text-label-caps">
-                  Wealth Advisor
-                </p>
+                <p class="author-name">Marcus Thorne</p>
+                <p class="author-role">Wealth Advisor</p>
               </div>
             </div>
           </div>
         </div>
       </section>
     </main>
-    <!-- Footer -->
-    <footer
-      class="bg-surface-container-lowest border-t border-outline-variant mt-20"
-    >
-      <div
-        class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-container-padding-desktop py-stack-lg max-w-[1440px] mx-auto"
-      >
-        <div class="space-y-6">
-          <div class="flex items-center gap-2">
-            <img alt="FraudShield Bank Logo" class="h-8 w-8" src="" />
-            <span
-              class="font-headline-md text-headline-md text-primary font-bold"
-              >FraudShield</span
-            >
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <div class="footer__logo">
+            <span class="footer__logo-text">FraudShield</span>
           </div>
-          <p class="text-on-surface-variant font-body-md pr-10">
+          <p class="footer__brand-desc">
             Institutional-grade security for the modern era. Protecting what
             matters most with invisible intelligence.
           </p>
         </div>
-        <div class="space-y-4">
-          <h4 class="text-white font-bold">Solutions</h4>
-          <nav class="flex flex-col gap-2">
-            <a
-              class="text-on-surface-variant hover:text-primary transition-colors"
-              href="#"
-              >Personal Banking</a
-            >
-            <a
-              class="text-on-surface-variant hover:text-primary transition-colors"
-              href="#"
-              >Wealth Management</a
-            >
-            <a
-              class="text-on-surface-variant hover:text-primary transition-colors"
-              href="#"
-              >Corporate Security</a
-            >
-            <a
-              class="text-on-surface-variant hover:text-primary transition-colors"
-              href="#"
-              >Fraud Hub</a
-            >
+
+        <div class="footer__col">
+          <h4>Solutions</h4>
+          <nav class="footer__nav">
+            <a href="#">Personal Banking</a>
+            <a href="#">Wealth Management</a>
+            <a href="#">Corporate Security</a>
+            <a href="#">Fraud Hub</a>
           </nav>
         </div>
-        <div class="space-y-4">
-          <h4 class="text-white font-bold">Resources</h4>
-          <nav class="flex flex-col gap-2">
-            <a
-              class="text-on-surface-variant hover:text-primary transition-colors"
-              href="#"
-              >Security Guarantee</a
-            >
-            <a
-              class="text-on-surface-variant hover:text-primary transition-colors"
-              href="#"
-              >Support Center</a
-            >
-            <a
-              class="text-on-surface-variant hover:text-primary transition-colors"
-              href="#"
-              >API Documentation</a
-            >
-            <a
-              class="text-on-surface-variant hover:text-primary transition-colors"
-              href="#"
-              >Compliance</a
-            >
+
+        <div class="footer__col">
+          <h4>Resources</h4>
+          <nav class="footer__nav">
+            <a href="#">Security Guarantee</a>
+            <a href="#">Support Center</a>
+            <a href="#">API Documentation</a>
+            <a href="#">Compliance</a>
           </nav>
         </div>
-        <div class="space-y-4">
-          <h4 class="text-white font-bold">Newsletter</h4>
-          <p class="text-on-surface-variant font-body-md">
+
+        <div class="footer__col">
+          <h4>Newsletter</h4>
+          <p class="footer__newsletter-desc">
             Get monthly security insights and banking updates.
           </p>
-          <div
-            class="flex bg-surface-container p-1 rounded-xl border border-white/10"
-          >
+          <div class="footer__email-row">
             <input
-              class="bg-transparent border-none focus:ring-0 text-white w-full px-3"
-              placeholder="Email address"
+              class="footer__email-input"
               type="email"
+              placeholder="Email address"
+              aria-label="Email address for newsletter"
             />
-            <button
-              class="bg-primary-container text-on-primary-container px-4 py-2 rounded-lg font-bold"
-            >
-              Join
-            </button>
+            <button class="footer__email-btn">Join</button>
           </div>
         </div>
       </div>
-      <div class="border-t border-outline-variant py-8">
-        <div
-          class="px-container-padding-desktop max-w-[1440px] mx-auto flex flex-col md:flex-row justify-between items-center gap-4"
-        >
-          <p class="font-label-caps text-label-caps text-on-surface-variant">
+
+      <div class="footer__bottom">
+        <div class="footer__bottom-inner">
+          <p class="footer__copy">
             © 2024 FraudShield Bank. Member FDIC. Equal Housing Lender.
           </p>
-          <div class="flex gap-stack-lg">
-            <a
-              class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors"
-              href="#"
-              >Privacy Policy</a
-            >
-            <a
-              class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors"
-              href="#"
-              >Terms of Service</a
-            >
-            <a
-              class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors"
-              href="#"
-              >Cookie Settings</a
-            >
-            <a
-              class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors"
-              href="#"
-              >Accessibility</a
-            >
+          <div class="footer__legal">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Cookie Settings</a>
+            <a href="#">Accessibility</a>
           </div>
         </div>
       </div>
     </footer>
-    <script>
-      // Smooth scroll reveal effect
-      const observerOptions = {
-        threshold: 0.1,
-      };
 
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("opacity-100");
-            entry.target.classList.remove("opacity-0", "translate-y-10");
-          }
-        });
-      }, observerOptions);
-
-      document.querySelectorAll("section").forEach((section) => {
-        section.classList.add(
-          "transition-all",
-          "duration-700",
-          "opacity-0",
-          "translate-y-10",
-        );
-        observer.observe(section);
-      });
-
-      // Interactive button micro-interactions
-      document.querySelectorAll("button").forEach((btn) => {
-        btn.addEventListener("mousedown", () => btn.classList.add("scale-95"));
-        btn.addEventListener("mouseup", () => btn.classList.remove("scale-95"));
-      });
-    </script>
+    <script src="/js/main.js"></script>
   </body>
 </html>

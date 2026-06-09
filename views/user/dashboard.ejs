@@ -4,12 +4,13 @@
 <head>
     <title>Customer Dashboard</title>
     <link rel="stylesheet" href="/css/user-dashboard.css">
+    <link rel="stylesheet" href="/css/style.css" />
 </head>
 
 <body>
 
-<div class="main">
-
+<div class="main user-dashboard">
+  <%- include('../partials/topnav') %>
     <%- include('../partials/flash') %>
 
     <h1>Welcome, <%= user.fullname %></h1>
@@ -128,6 +129,7 @@
 </div>
 
 <script src="/js/flash.js"></script>
+<script src="/js/main.js"></script>
 
 </body>
 </html>

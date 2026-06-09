@@ -1,0 +1,67 @@
+ <!-- ===== NAVIGATION ===== -->
+    <nav class="nav" id="nav">
+      <div class="nav__inner">
+        <a class="nav__brand" href="/">FraudShield</a>
+
+        <button
+          class="nav__toggle"
+          type="button"
+          aria-label="Toggle navigation menu"
+          aria-expanded="false"
+          aria-controls="navMenu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <div class="nav__menu" id="navMenu">
+          <div class="nav__links">
+            <a href="#" class="active">Personal</a>
+            <a href="#">Wealth</a>
+            <a href="#">Security</a>
+            <a href="#">Support</a>
+          </div>
+
+        <div class="nav__actions">
+
+     <% if (customerIsAuthenticated) { %>
+
+        <a class="btn-ghost" href="/user/dashboard">
+            My Dashboard
+        </a>
+
+        <a class="btn-primary" href="/auth/logout">
+            Logout
+        </a>
+ 
+     <% } else if (adminIsAuthenticated) { %>
+
+        <a class="btn-ghost" href="/dashboard">
+            Admin Dashboard
+        </a>
+
+        <a class="btn-primary" href="/auth/logout">
+            Logout
+        </a>
+
+     <% } else { %>
+
+        <a class="btn-ghost" href="/auth/customer-login">
+            Login
+        </a>
+
+        <a class="btn-primary" href="/auth/login">
+            Admin Login
+        </a>
+
+     <% } %>
+
+      </div>
+        </div>
+      </div>
+    </nav>
+
+
+  
+

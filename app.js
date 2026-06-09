@@ -40,8 +40,12 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Test route
 app.get("/", (req, res) => {
+
+
   res.render("index", {
     title: "FraudShield - Secure Banking",
+    customerIsAuthenticated: req.session.user && req.session.user.role === "customer" ? true : false,
+    adminIsAuthenticated: req.session.user && req.session.user.role === "admin" ? true : false,
   });
 });
 
@@ -49,7 +53,7 @@ app.get("/", (req, res) => {
 app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
-
+res.locals.user = req.session.user || null;
   next();
 });
 app.use("/auth", authRoutes);
@@ -63,3 +67,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+

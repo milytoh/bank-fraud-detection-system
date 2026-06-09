@@ -45,6 +45,14 @@ exports.dashboard = (req, res) => {
           account: accResult[0],
           transactions: txns,
           alerts,
+          customerIsAuthenticated:
+            req.session.user && req.session.user.role === "customer"
+              ? true
+              : false,
+          adminIsAuthenticated:
+            req.session.user && req.session.user.role === "admin"
+              ? true
+              : false,
         });
       });
     });
@@ -64,7 +72,6 @@ exports.transfer = (req, res) => {
   const recipientAccountNumber = req.body.to_account;
   const amount = Number(req.body.amount);
 
-  // Find recipient by account number
   const findRecipientSql = `
     SELECT id
     FROM accounts
@@ -76,7 +83,6 @@ exports.transfer = (req, res) => {
     [recipientAccountNumber],
     (err, recipientResult) => {
       if (err) {
-        console.log(err);
         req.flash("error", "Transfer failed");
         return res.redirect("/user/transfer");
       }
@@ -88,15 +94,13 @@ exports.transfer = (req, res) => {
 
       const recipientId = recipientResult[0].id;
 
-      // Prevent transfer to self
       if (recipientId == from_account) {
         req.flash("error", "You cannot transfer to your own account");
         return res.redirect("/user/transfer");
       }
 
-      // Check sender balance
       const checkSql = `
-        SELECT balance
+        SELECT balance, status
         FROM accounts
         WHERE id = ?
       `;
@@ -105,6 +109,16 @@ exports.transfer = (req, res) => {
         if (err || result.length === 0) {
           req.flash("error", "Account not found");
           return res.redirect("/user/transfer");
+        }
+
+        // 🚫 BLOCKED ACCOUNT CHECK
+        if (result[0].status === "blocked") {
+          req.flash(
+            "error",
+            "Your account has been blocked. Please contact the administrator.",
+          );
+
+          return res.redirect("/user/dashboard");
         }
 
         const balance = Number(result[0].balance);
@@ -128,14 +142,12 @@ exports.transfer = (req, res) => {
 
         db.query(deductSql, [amount, from_account], (err) => {
           if (err) {
-            console.log(err);
             req.flash("error", "Transfer failed");
             return res.redirect("/user/transfer");
           }
 
           db.query(addSql, [amount, recipientId], (err) => {
             if (err) {
-              console.log(err);
               req.flash("error", "Transfer failed");
               return res.redirect("/user/transfer");
             }
@@ -155,12 +167,15 @@ exports.transfer = (req, res) => {
     },
   );
 };
-
 exports.withdraw = (req, res) => {
   const from_account = req.session.user.account_id;
-  const amount = Number(req.body.amount); // ✅ FIX HERE
+  const amount = Number(req.body.amount);
 
-  const checkSql = `SELECT balance FROM accounts WHERE id = ?`;
+  const checkSql = `
+    SELECT balance, status
+    FROM accounts
+    WHERE id = ?
+  `;
 
   db.query(checkSql, [from_account], (err, result) => {
     if (err || result.length === 0) {
@@ -168,7 +183,17 @@ exports.withdraw = (req, res) => {
       return res.redirect("/user/withdraw");
     }
 
-    const balance = Number(result[0].balance); //
+    // 🚫 BLOCKED ACCOUNT CHECK
+    if (result[0].status === "blocked") {
+      req.flash(
+        "error",
+        "Your account has been blocked. Please contact the administrator.",
+      );
+
+      return res.redirect("/accounts/user/dashboard");
+    }
+
+    const balance = Number(result[0].balance);
 
     if (balance < amount) {
       req.flash("error", "Insufficient balance");
@@ -208,27 +233,50 @@ exports.deposit = (req, res) => {
   const accountId = req.session.user.account_id;
   const amount = Number(req.body.amount);
 
-  const sql = `
-    UPDATE accounts
-    SET balance = balance + ?
+  const checkSql = `
+    SELECT status
+    FROM accounts
     WHERE id = ?
   `;
 
-  db.query(sql, [amount, accountId], (err) => {
-    if (err) {
-      req.flash("error", "Deposit failed");
+  db.query(checkSql, [accountId], (err, result) => {
+    if (err || result.length === 0) {
+      req.flash("error", "Account not found");
       return res.redirect("/user/deposit");
     }
 
-    saveTransaction(
-      null,
-      accountId,
-      amount,
-      "deposit",
-      res,
-      "Deposit successful (simulation)",
-      req,
-    );
+    // 🚫 BLOCKED ACCOUNT CHECK
+    if (result[0].status === "blocked") {
+      req.flash(
+        "error",
+        "Your account has been blocked. Please contact the administrator.",
+      );
+
+      return res.redirect("/accounts/user/dashboard");
+    }
+
+    const sql = `
+      UPDATE accounts
+      SET balance = balance + ?
+      WHERE id = ?
+    `;
+
+    db.query(sql, [amount, accountId], (err) => {
+      if (err) {
+        req.flash("error", "Deposit failed");
+        return res.redirect("/user/deposit");
+      }
+
+      saveTransaction(
+        null,
+        accountId,
+        amount,
+        "deposit",
+        res,
+        "Deposit successful (simulation)",
+        req,
+      );
+    });
   });
 };
 
@@ -250,14 +298,13 @@ function saveTransaction(from, to, amount, type, res, message, req) {
 
     // 👉 CALL FRAUD DETECTION
     // detectFraud(transactionId, from, to, amount, type);
-     // 👉 CALL FRAUD DETECTION
+    // 👉 CALL FRAUD DETECTION
     detectFraud(transactionId, from, to, amount, type);
 
     req.flash("success", message);
     return res.redirect("/accounts/user/dashboard");
   });
 }
-
 
 /////fraud detection rules/////////////
 function detectFraud(transactionId, fromAccount, toAccount, amount, type) {
@@ -294,8 +341,6 @@ AND created_at >= (NOW() - INTERVAL 1 MINUTE)
 `;
 
   db.query(sql, [accountToCheck, accountToCheck], (err, result) => {
-   
-
     if (result[0].count >= 3) {
       alerts.push("Rapid transactions detected");
     }
@@ -306,8 +351,6 @@ AND created_at >= (NOW() - INTERVAL 1 MINUTE)
 
 function saveAlerts(alerts, accountId, transactionId) {
   if (!alerts || alerts.length === 0) return;
-
-  
 
   alerts.forEach((msg) => {
     const sql = `
@@ -324,7 +367,6 @@ function saveAlerts(alerts, accountId, transactionId) {
     });
   });
 }
-
 
 exports.transactionHistory = (req, res) => {
   const accountId = req.session.user.account_id;

@@ -9,6 +9,7 @@ router.get("/logout", authController.logout);
 
 router.get("/customer-login", authController.showCustomerLogin);
 router.post("/customer-login", authController.customerLogin);
+router.get("/customer-logout", authController.customerLogout);
 
 
 module.exports = router;
