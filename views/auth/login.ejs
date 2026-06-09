@@ -2,35 +2,35 @@
 <html>
   <head>
     <title>FraudShield Login</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+       
     <link rel="stylesheet" href="/css/auth.css" />
-    <link rel="stylesheet" href="/css/style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/css/alerts.css" />
+
   </head>
   <body>
-    <%- include('../partials/topnav') %>
     <div class="main">
-      <div class="container">
-        <div class="login-box">
-          <%- include('../partials/flash') %>
-          <h2>FraudShield Banking</h2>
-          <p>Secure Access Portal</p>
+       
+    <div class="container">
+      
+      <div class="login-box">
+         <%- include('../partials/flash') %>
+        <h2>FraudShield Banking</h2>
+        <p>Secure Access Portal</p>
 
-          <form method="POST" action="/auth/login">
-            <input type="email" name="email" placeholder="Email" required />
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              required
-            />
+        <form method="POST" action="/auth/login">
+          <input type="email" name="email" placeholder="Email" required />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            required
+          />
 
-            <button type="submit">Login</button>
-          </form>
-        </div>
+          <button type="submit">Login</button>
+        </form>
       </div>
     </div>
-    <%- include('../partials/footer') %>
-    <script src="/js/main.js"></script>
+    </div>
   </body>
 </html>

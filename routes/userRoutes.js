@@ -24,8 +24,6 @@ router.get("/deposit", isCustomer, userController.depositPage);
 router.post("/deposit", isCustomer, userController.deposit);
 
 router.get("/history", isCustomer, userController.transactionHistory);
+router.get("/statement", isCustomer, userController.statement);
 
 module.exports = router;
-
- 
- 

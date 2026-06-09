@@ -1,4 +1,7 @@
 const db = require("../config/db");
+
+const PDFDocument = require("pdfkit");
+
 exports.dashboard = (req, res) => {
   const accountId = req.session.user.account_id;
 
@@ -390,5 +393,147 @@ exports.transactionHistory = (req, res) => {
       user: req.session.user,
       transactions,
     });
+  });
+};
+
+
+const path = require("path");
+
+exports.statement = (req, res) => {
+  const accountId = req.session.user.account_id;
+
+  const sql = `
+    SELECT *
+    FROM transactions
+    WHERE from_account = ? OR to_account = ?
+    ORDER BY created_at DESC
+  `;
+
+  db.query(sql, [accountId, accountId], (err, transactions) => {
+    if (err) {
+      req.flash("error", "Could not generate statement");
+      return res.redirect("/user/dashboard");
+    }
+
+    const doc = new PDFDocument({
+      margin: 50,
+      size: "A4",
+    });
+
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=FraudShield-Statement.pdf",
+    );
+
+    res.setHeader("Content-Type", "application/pdf");
+
+    doc.pipe(res);
+
+    // =====================
+    // LOGO
+    // =====================
+
+    const logoPath = path.join(__dirname, "../public/img/f-logo.png");
+
+    try {
+      doc.image(logoPath, 50, 40, {
+        width: 60,
+      });
+    } catch (e) {
+      console.log("Logo not found");
+    }
+
+    // =====================
+    // BANK HEADER
+    // =====================
+
+    doc.fontSize(24).fillColor("#2563eb").text("FraudShield Bank", 120, 50);
+
+    doc
+      .fontSize(10)
+      .fillColor("#555")
+      .text("Secure Banking Powered by Fraud Detection", 120, 80);
+
+    doc.moveDown(4);
+
+    // =====================
+    // CUSTOMER INFO
+    // =====================
+
+    doc.fillColor("#000").fontSize(16).text("Account Statement");
+
+    doc.moveDown();
+
+    doc.fontSize(11);
+
+    doc.text(`Customer: ${req.session.user.fullname}`);
+    doc.text(`Account ID: ${accountId}`);
+    doc.text(`Generated: ${new Date().toLocaleString()}`);
+
+    doc.moveDown(2);
+
+    // =====================
+    // TABLE HEADER
+    // =====================
+
+    const startY = doc.y;
+
+    doc.rect(50, startY, 500, 25).fill("#2563eb");
+
+    doc
+      .fillColor("white")
+      .fontSize(10)
+      .text("Date", 60, startY + 8)
+      .text("Type", 200, startY + 8)
+      .text("Amount", 320, startY + 8)
+      .text("Status", 450, startY + 8);
+
+    let y = startY + 35;
+
+    // =====================
+    // TRANSACTIONS
+    // =====================
+
+    transactions.forEach((t) => {
+      doc.fillColor("#000");
+
+      doc.text(new Date(t.created_at).toLocaleDateString(), 60, y);
+
+      doc.text(t.type.toUpperCase(), 200, y);
+
+      doc.text(`₦${Number(t.amount).toLocaleString()}`, 320, y);
+
+      doc.text(t.status, 450, y);
+
+      y += 25;
+
+      doc
+        .moveTo(50, y - 5)
+        .lineTo(550, y - 5)
+        .strokeColor("#e5e7eb")
+        .stroke();
+    });
+
+    // =====================
+    // FOOTER
+    // =====================
+
+    doc.moveDown(3);
+
+    doc
+      .fontSize(9)
+      .fillColor("#777")
+      .text(
+        "This statement was generated electronically by FraudShield Bank.",
+        {
+          align: "center",
+        },
+      );
+
+    doc.text("Secure Banking Powered by Fraud Detection", {
+      align: "center",
+    });
+
+    doc.end();
   });
 };

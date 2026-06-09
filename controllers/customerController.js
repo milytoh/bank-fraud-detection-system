@@ -1,5 +1,5 @@
 const db = require("../config/db");
-
+const PDFDocument = require("pdfkit");
 // List customers
 exports.index = (req, res) => {
   db.query("SELECT * FROM customers ORDER BY id DESC", (err, customers) => {
@@ -53,3 +53,5 @@ exports.store = (req, res) => {
    res.redirect("/customers");
   });
 };
+
+
