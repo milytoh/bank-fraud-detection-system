@@ -12,12 +12,9 @@ const accountRoutes = require("./routes/accountRoutes");
 const transactionRoutes = require("./routes/transactionRoutes");
 const userRoutes = require("./routes/userRoutes");
 
-
-
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 
 app.use(
   session({
@@ -25,7 +22,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      maxAge: 1000 * 60 * 60, // 
+      maxAge: 1000 * 60 * 60, //
     },
   }),
 );
@@ -40,20 +37,19 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Test route
 app.get("/", (req, res) => {
-
-
   res.render("index", {
     title: "FraudShield - Secure Banking",
-    customerIsAuthenticated: req.session.user && req.session.user.role === "customer" ? true : false,
-    adminIsAuthenticated: req.session.user && req.session.user.role === "admin" ? true : false,
+    customerIsAuthenticated:
+      req.session.user && req.session.user.role === "customer" ? true : false,
+    adminIsAuthenticated:
+      req.session.user && req.session.user.role === "admin" ? true : false,
   });
 });
-
 
 app.use((req, res, next) => {
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
-res.locals.user = req.session.user || null;
+  res.locals.user = req.session.user || null;
   next();
 });
 app.use("/auth", authRoutes);
@@ -67,4 +63,3 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-

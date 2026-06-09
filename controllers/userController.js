@@ -488,13 +488,18 @@ exports.statement = (req, res) => {
       .text("Amount", 320, startY + 8)
       .text("Status", 450, startY + 8);
 
-    let y = startY + 35;
+    ///////
 
-    // =====================
-    // TRANSACTIONS
-    // =====================
+    let y = startY + 35;
+    const pageHeight = doc.page.height - 100; // safe margin
 
     transactions.forEach((t) => {
+      // 👉 PAGE BREAK CHECK
+      if (y > pageHeight) {
+        doc.addPage();
+        y = 50;
+      }
+
       doc.fillColor("#000");
 
       doc.text(new Date(t.created_at).toLocaleDateString(), 60, y);
